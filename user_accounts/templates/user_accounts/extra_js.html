@@ -1,0 +1,15 @@
+<script>
+    let admin_check_box = document.getElementById('id_admin');
+    let all_check_box = $('input:checkbox');
+    $(admin_check_box).change(function () {
+        if (admin_check_box.checked === true) {
+            for (e of all_check_box) {
+                e.checked = true
+            }
+        } else {
+            for (e of all_check_box) {
+                e.checked = false
+            }
+        }
+    });
+</script>

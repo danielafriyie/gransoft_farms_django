@@ -1,0 +1,19 @@
+<section id="top-bar" class="p-4">
+    <div>
+        <div id="burger-button" class="py-1">
+            <div>
+                <div id="bar1"></div>
+                <div id="bar2"></div>
+                <div id="bar3"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="farm-name">
+        <span>
+            {% if company %}
+                {{ company.name }}
+            {% endif %}
+        </span>
+    </div>
+</section>

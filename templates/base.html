@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>GranSoft Farms</title>
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/core.css' %}">
+
+</head>
+<body>
+
+{# nav bar#}
+<div id="nav-bar">
+    <div id="">
+        {% include 'partials/_top_bar.html' %}
+    </div>
+
+    <div id="">
+        {% include 'partials/_side_nav.html' %}
+    </div>
+</div>
+{# end of nav bar #}
+
+{# side nav overlay #}
+<div id="side-nav-overlay" class="animated "></div>
+{# end of side nave overlay #}
+
+{# bread crumbs #}
+<section id="bread-crumbs" style="width: 85%" class="pb-3 mb-5">
+    <span class="ml-5">{% block breadcrumb %} {% endblock breadcrumb %}</span>
+</section>
+{# end of bread crumbs #}
+
+{# main content #}
+<div id="main-content" style="width: 85%">
+    {% include 'partials/_alerts.html' %}
+    {% block content %} {% endblock content %}
+</div>
+{# end of main content #}
+
+{# footer #}
+{% include 'partials/_footer.html' %}
+{# end of footer #}
+
+<script rel="script" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+<script rel="script" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script rel="script" src="{% static 'js/all.min.js' %}"></script>
+<script rel="script" src="{% static 'js/sorttable.js' %}"></script>
+<script rel="script" src="{% static 'js/core.js' %}"></script>
+{% block javascript %} {% endblock javascript %}
+</body>
+</html>

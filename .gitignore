@@ -1,0 +1,11 @@
+.vscode
+.env
+db.sqlite3
+.idea
+__pycache__
+/migrations/
+event_log
+core/settings/prod_settings.py
+/__pycache__/
+user_accounts/migrations
+home/migrations

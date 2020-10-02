@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block breadcrumb %} User Accounts &raquo; Create Account {% endblock breadcrumb %}
+
+{% block content %}
+    <section id="user-account" class="p-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <div>
+                        <form action="{% url 'user_accounts:create_user_account' %}" method="post"
+                              enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <fieldset>
+                                <legend>Personal Information:</legend>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <label for="" class="input-group-text" style="width: 8rem;">
+                                                    Name:
+                                                </label>
+                                            </div>
+                                            {{ form.name }}
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <label for="" class="input-group-text" style="width: 8rem;">
+                                                    Phone:
+                                                </label>
+                                            </div>
+                                            {{ form.phone_no }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <label for="" class="input-group-text" style="width: 8rem;">
+                                                    Gender:
+                                                </label>
+                                            </div>
+                                            {{ form.gender }}
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <label for="" class="input-group-text" style="width: 8rem;">
+                                                    Date of Birth:
+                                                </label>
+                                            </div>
+                                            {{ form.date_of_birth }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <label for="" class="input-group-text" style="width: 8rem;">
+                                                    Username:
+                                                </label>
+                                            </div>
+                                            {{ form.username }}
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <label for="" class="input-group-text" style="width: 8rem;">
+                                                    Password:
+                                                </label>
+                                            </div>
+                                            {{ form.password }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            {% include 'user_accounts/access_rights.html' %}
+
+                            <div class="d-flex justify-content-center">
+                                <input style="width: 15rem;"
+                                       type="submit" value="Save" name="save" class="btn btn-info mx-1 px-5">
+                                <input style="width: 15rem;"
+                                       type="reset" value="Cancel" name="cancel" class="btn btn-secondary mx-1 px-5">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
+{% block javascript %}
+    {% include 'user_accounts/extra_js.html' %}
+{% endblock javascript %}

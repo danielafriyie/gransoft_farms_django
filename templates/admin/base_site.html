@@ -1,0 +1,22 @@
+{% extends 'admin/base_site.html' %}
+{% load static %}
+
+{% block branding %}
+    <html lang="en-us">
+    <head>
+        <title>{% block title %}GranSoft Farms | Administration {% endblock %}</title>
+    </head>
+
+    <body>
+    <h1 id="head" style="font-family: Algerian, serif; color: #d6d6d6;">
+        <span>GranSoft Farms</span> Administration Area
+    </h1>
+    </body>
+    </html>
+{% endblock branding %}
+
+{% block extrastyle %}
+
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+
+{% endblock %}
