@@ -21,6 +21,7 @@ class UsersManager(BaseUserManager):
         user.is_admin = True
         user.is_staff = True
         user.is_superuser = True
+        user.is_immutable = True
         user.save(using=self._db)
         return user
 
@@ -38,6 +39,7 @@ class BaseUserAccountsModel(models.Model):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
+    is_immutable = models.BooleanField(default=False)
 
     class Meta:
         abstract = True
@@ -61,6 +63,7 @@ class UserAccountsModel(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
+    is_immutable = models.BooleanField(default=False)
     auth_user = models.ForeignKey(User, blank=True, null=True, on_delete=models.RESTRICT)
 
     USERNAME_FIELD = 'username'

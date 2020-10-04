@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages as msg
-from django.contrib.auth.decorators import login_required
 from django.http import Http404
 
 from .forms import LoginForm, ChangePasswordForm
@@ -55,7 +54,6 @@ def change_password(request):
     return render(request, 'home/change_password.html', {'change_form': ChangePasswordForm()})
 
 
-@login_required(login_url='home:login')
 def logout_view(request):
     if request.method == 'POST':
         logout(request)
@@ -63,6 +61,5 @@ def logout_view(request):
         return redirect('home:login')
 
 
-@login_required(login_url='home:login')
 def home(request):
     return render(request, 'home/homepage.html')

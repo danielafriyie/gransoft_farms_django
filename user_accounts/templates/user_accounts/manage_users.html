@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block breadcrumb %} User Accounts &raquo; Manage Users {% endblock breadcrumb %}
+
+{% block content %}
+    <section id="manage-users" class="p-1">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    {% if perms.user_accounts.add_user %}
+                        <div class="mb-1">
+                            <a href="{% url 'user_accounts:create_user_account' %}" class="btn btn-info">
+                                Create Account
+                            </a>
+                        </div>
+                    {% endif %}
+                    <table class="table table-sm table-bordered table-responsive-md sortable">
+                        <caption>Users</caption>
+                        <thead class="thead-light">
+                        <tr>
+                            <th class="table-head" scope="col">Username &nbsp;</th>
+                            <th class="table-head" scope="col">Name &nbsp;</th>
+                            <th class="table-head" scope="col">Phone &nbsp;</th>
+                            <th class="table-head" scope="col">Gender &nbsp;</th>
+                            <th class="table-head" scope="col">Date Created &nbsp;</th>
+                            <th class="table-head" scope="col">Last Login &nbsp;</th>
+                            {% if perms.user_accounts.delete_user %}
+                                <th class="table-head" scope="col">Action &nbsp;</th>
+                            {% endif %}
+                            <th class="table-head" scope="col">Status &nbsp;</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if paginator_pages %}
+                            {% for user in paginator_pages %}
+                                <tr>
+                                    <th class="m-0 p-0">
+                                        <form action="{% url 'user_accounts:update_user' user.pk %}"
+                                              method="get" enctype="multipart/form-data">
+                                            <button type="submit" class="btn btn-default">
+                                                <strong>{{ user.username }}</strong>
+                                            </button>
+                                        </form>
+                                    </th>
+                                    <td>{{ user.name }}</td>
+                                    <td>{{ user.phone_no }}</td>
+                                    <td>{{ user.gender }}</td>
+                                    <td>{{ user.date_created|date:'Y-m-d, H:i' }}</td>
+                                    <td>{{ user.last_login|date:'Y-m-d, H:i' }}</td>
+                                    {% if perms.user_accounts.delete_user %}
+                                        <td class="m-0 p-0">
+                                            <a href="#" data-toggle="modal" data-target="#confirm-modal"
+                                               class="text-decoration-none btn btn-default"
+                                               onclick="confirmModal('delete-user-{{ user.username }}', 'Confirm Delete')">
+                                                <span><i class="fa fa-trash-alt"></i></span>
+                                            </a>
+                                            <form action="{% url 'user_accounts:delete_user' user.pk %}"
+                                                  method="post" enctype="multipart/form-data" style="display: none"
+                                                  id="delete-user-{{ user.username }}">
+                                                {% csrf_token %}
+                                                <input type="hidden">
+                                            </form>
+                                        </td>
+                                    {% endif %}
+                                    <td class="m-0 p-0">
+                                        <a href="#" data-toggle="modal" data-target="#confirm-modal"
+                                           class="text-decoration-none btn btn-default"
+                                           onclick="confirmModal('toggle-user-status-{{ user.username }}', 'Confirm Status Change')">
+                                            <span>
+                                                {% if user.is_active %}
+                                                    <i class="fa fa-lock-open"></i>
+                                                {% else %}
+                                                    <i class="fa fa-lock"></i>
+                                                {% endif %}
+                                            </span>
+                                        </a>
+                                        <form action="{% url 'user_accounts:toggle_user_status' %}"
+                                              method="post" style="display: none" ,
+                                              id="toggle-user-status-{{ user.username }}"
+                                              enctype="multipart/form-data">{% csrf_token %}
+                                            <input type="hidden" value="{{ user.pk }}" name="user_id">
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+                    {% include 'partials/_pagination.html' %}
+                    {% include 'partials/_confirm_modal.html' %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

@@ -177,6 +177,19 @@ html, body {
     transition: all 1s;
 }
 
+.custom-form-input {
+    margin-bottom: 30px !important;
+    border-bottom: 2px solid #ccc !important;
+    width: 100% !important;
+}
+
+.custom-form-control {
+    outline: none !important;
+    margin: 0 !important;
+    border: none !important;
+    width: 100% !important;
+}
+
 
 /* media queries */
 @media screen and (max-width: 1449px) {
@@ -203,6 +216,9 @@ html, body {
 }
 
 @media screen and (max-width: 1440px) {
+    #farm-name span {
+        font-size: inherit;
+    }
     #side-nav {
         width: 22% !important;
     }

@@ -1,108 +1,120 @@
-<fieldset class="">
-    <legend>Access Rights:</legend>
-    <div class="px-5">
-        <div class="form-group form-check px-5">
-            <label class="form-check-label">
-                {{ roles.admin }} Administrator
-            </label>
-        </div>
-        <div class="px-5">
-            <div class="row">
-                <div class="col">
-                    <fieldset class="my-2">
-                        <div class="card">
-                            <h5 class="card-header">Users</h5>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group form-check">
-                                            <label class="form-check-label">
-                                                {{ roles.user_create }} New User
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group form-check">
-                                            <label class="form-check-label">
-                                                {{ roles.user_update }} Update User
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group form-check">
-                                            <label class="form-check-label">
-                                                {{ roles.user_delete }} Delete User
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-
-                    <fieldset class="my-2">
-                        <div class="card">
-                            <h5 class="card-header">Birds</h5>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group form-check">
-                                            <label class="form-check-label">
-                                                {{ roles.fowls_create }} Add New
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group form-check">
-                                            <label class="form-check-label">
-                                                {{ roles.fowls_update }} Update
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group form-check">
-                                            <label class="form-check-label">
-                                                {{ roles.fowls_delete }} Delete
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-
-                    <fieldset class="my-2">
-                        <div class="card">
-                            <h5 class="card-header">Finance</h5>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group form-check">
-                                            <label class="form-check-label">
-                                                {{ roles.finance_create }} Add New
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group form-check">
-                                            <label class="form-check-label">
-                                                {{ roles.finance_update }} Update
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group form-check">
-                                            <label class="form-check-label">
-                                                {{ roles.finance_delete }} Delete
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-                </div>
+<fieldset class="mt-3">
+    <div class="">
+        {% if user.is_admin %}
+            <div class="form-group form-check my-0">
+                <label class="form-check-label">
+                    {{ roles.admin }} Administrator
+                </label>
             </div>
-        </div>
+            <hr>
+        {% endif %}
+        <table class="table table-sm table-borderless table-responsive-md sortable my-1">
+            <thead class="">
+            <tr>
+                <th class="table-head w-25 font-weight-normal" scope="col">
+                    Users
+                </th>
+                <th class="table-head font-weight-normal" scope="col">
+                    <div class="form-group form-check my-0">
+                        <label class="form-check-label">
+                            {{ roles.user_create }} Create
+                        </label>
+                    </div>
+                </th>
+                <th class="table-head font-weight-normal" scope="col">
+                    <div class="form-group form-check my-0">
+                        <label class="form-check-label">
+                            {{ roles.user_update }} Update
+                        </label>
+                    </div>
+                </th>
+                <th class="table-head font-weight-normal" scope="col">
+                    <div class="form-group form-check my-0">
+                        <label class="form-check-label">
+                            {{ roles.user_delete }} Delete
+                        </label>
+                    </div>
+                </th>
+            </tr>
+            </thead>
+        </table>
+        <hr>
+        <table class="table table-sm table-borderless table-responsive-md sortable my-1">
+            <thead class="">
+            <tr>
+                <th class="table-head w-25 font-weight-normal">
+                    Finance &nbsp;
+                </th>
+                <th class="table-head font-weight-normal" scope="col">
+                    <div class="form-group form-check my-0">
+                        <label class="form-check-label">
+                            {{ roles.finance_create }} Create
+                        </label>
+                    </div>
+                </th>
+                <th class="table-head font-weight-normal" scope="col">
+                    <div class="form-group form-check my-0">
+                        <label class="form-check-label">
+                            {{ roles.finance_update }} Update
+                        </label>
+                    </div>
+                </th>
+                <th class="table-head font-weight-normal" scope="col">
+                    <div class="form-group form-check my-0">
+                        <label class="form-check-label">
+                            {{ roles.finance_delete }} Delete
+                        </label>
+                    </div>
+                </th>
+            </tr>
+            </thead>
+        </table>
+        <hr>
+        <table class="table table-sm table-borderless table-responsive-md sortable my-1">
+            <thead class="">
+            <tr>
+                <th class="table-head w-25 font-weight-normal" scope="col">Birds
+                    &nbsp;
+                </th>
+                <th class="table-head font-weight-normal" scope="col">
+                    <div class="form-group form-check my-0">
+                        <label class="form-check-label">
+                            {{ roles.fowls_create }} Create
+                        </label>
+                    </div>
+                </th>
+                <th class="table-head font-weight-normal" scope="col">
+                    <div class="form-group form-check my-0">
+                        <label class="form-check-label">
+                            {{ roles.fowls_update }} Update
+                        </label>
+                    </div>
+                </th>
+                <th class="table-head font-weight-normal" scope="col">
+                    <div class="form-group form-check my-0">
+                        <label class="form-check-label">
+                            {{ roles.fowls_delete }} Delete
+                        </label>
+                    </div>
+                </th>
+            </tr>
+            </thead>
+        </table>
+        <hr>
     </div>
 </fieldset>
+<style>
+    .table-border-1 {
+        border-bottom: 2px solid #ccc !important;
+    }
+
+    @media screen and (max-width: 450px) {
+        table tr th {
+            font-size: small;
+        }
+
+        table tr th div label {
+            font-size: small;
+        }
+    }
+</style>

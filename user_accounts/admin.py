@@ -15,7 +15,7 @@ class CreateUserAccountForm(forms.ModelForm):
         model = UserAccountsModel
         fields = (
             'name', 'username', 'phone_no', 'gender', 'date_of_birth',
-            'is_admin', 'is_staff', 'is_superuser', 'auth_user'
+            'is_admin', 'is_staff', 'is_superuser', 'is_immutable', 'auth_user'
         )
 
     def clean_password2(self):
@@ -42,7 +42,7 @@ class UpdateUserAccountForm(forms.ModelForm):
         model = UserAccountsModel
         fields = (
             'name', 'username', 'phone_no', 'gender', 'date_of_birth',
-            'last_login', 'is_admin', 'is_active', 'is_staff', 'is_superuser', 'auth_user'
+            'last_login', 'is_admin', 'is_active', 'is_staff', 'is_superuser', 'is_immutable', 'auth_user'
         )
 
     def clean_password(self):
@@ -61,7 +61,7 @@ class UserAccountsAdmin(UserAdmin):
         (None, {'fields': ('username', 'password')}),
         (_('Personal info'), {'fields': ('name', 'phone_no', 'gender', 'date_of_birth', 'auth_user')}),
         (_('Permissions'), {
-            'fields': ('is_admin', 'is_active', 'is_staff', 'is_superuser', 'user_permissions'),
+            'fields': ('is_admin', 'is_active', 'is_staff', 'is_superuser', 'is_immutable', 'user_permissions'),
         }),
         (_('Important dates'), {'fields': ('date_created',)}),
     )
@@ -71,7 +71,7 @@ class UserAccountsAdmin(UserAdmin):
             'classes': ('wide',),
             'fields': (
                 'name', 'username', 'phone_no', 'gender', 'date_of_birth',
-                'is_admin', 'is_staff', 'is_superuser', 'auth_user',
+                'is_admin', 'is_staff', 'is_superuser', 'is_immutable', 'auth_user',
                 'password1', 'password2'
             )
         }),
@@ -79,7 +79,7 @@ class UserAccountsAdmin(UserAdmin):
 
     list_display = (
         'id', 'username', 'name', 'phone_no', 'gender', 'date_of_birth',
-        'date_created', 'is_admin', 'is_active', 'is_staff', 'is_superuser'
+        'date_created', 'is_admin', 'is_active', 'is_staff', 'is_superuser', 'is_immutable'
     )
     list_display_links = ('id', 'username')
     readonly_fields = ('date_created',)

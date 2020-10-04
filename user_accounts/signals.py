@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 
 from .models import UserAccountsModel, UserAccountsModelAudit, UsersAuthenticationLog
 from logger import auth_log
+from utils import assert_immutable_user
 
 
 def co_user_accounts_audit(instance, action):
@@ -22,13 +23,14 @@ def co_user_accounts_audit(instance, action):
         is_admin=instance.is_admin,
         is_active=instance.is_active,
         is_staff=instance.is_staff,
+        is_immutable=instance.is_immutable,
         is_superuser=instance.is_superuser,
         action_flag=action
     )
 
 
 @receiver(pre_save, sender=UserAccountsModel)
-def user_accounts_pre_save(sender, instance, **kwargs):
+def sig_user_accounts_pre_save(sender, instance, **kwargs):
     if instance._state.adding:
         co_user_accounts_audit(instance=instance, action='Insert')
     else:
@@ -50,7 +52,9 @@ def user_accounts_pre_save(sender, instance, **kwargs):
 
 
 @receiver(pre_delete, sender=UserAccountsModel)
-def user_accounts_pre_delete(sender, instance, **kwargs):
+def sig_user_accounts_pre_delete(sender, instance, **kwargs):
+    user = get_object_or_404(UserAccountsModel, pk=instance.pk, username=instance.username)
+    assert_immutable_user(user)
     co_user_accounts_audit(instance=instance, action='Delete')
 
 

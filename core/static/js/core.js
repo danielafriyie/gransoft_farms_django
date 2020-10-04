@@ -60,3 +60,14 @@ function dropDownMenu(elm) {
     let subMenu = elm.nextElementSibling;
     $(subMenu).slideToggle();
 }
+
+function confirmModal(form_id, title) {
+    let modalBtn = document.getElementById('confirm-modal-button');
+    let modalTitle = document.getElementById('confirm-modal-title');
+    modalTitle.innerHTML = title;
+    $(modalBtn).click(function () {
+        document.getElementById(form_id).submit();
+    });
+}
+
+

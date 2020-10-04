@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
-{% block breadcrumb %} User Accounts &raquo; Create Account {% endblock breadcrumb %}
+{% block breadcrumb %} User Accounts &raquo; Update Account &raquo;
+    {{ form.instance.username }} {% endblock breadcrumb %}
 
 {% block content %}
-    <section id="user-account" class="p-1">
+    <section id="update-user-account">
         <div class="container-fluid">
             <div class="row">
                 <div class="col">
                     <div>
-                        <form action="{% url 'user_accounts:create_user_account' %}" method="post"
+                        <form action="{% url 'user_accounts:update_user' form.instance.pk %}" method="post"
                               enctype="multipart/form-data">
                             {% csrf_token %}
                             <fieldset class="pt-4">
@@ -35,20 +36,6 @@
                                     <div class="col-md-6">
                                         <div class="custom-form-input">
                                             {{ form.date_of_birth }}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="custom-form-input">
-                                            {{ form.username }}
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="custom-form-input">
-                                            {{ form.password }}
                                         </div>
                                     </div>
                                 </div>
