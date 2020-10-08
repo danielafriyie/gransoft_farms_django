@@ -5,6 +5,7 @@ Django==3.1.1
 isort==5.5.3
 lazy-object-proxy==1.4.3
 mccabe==0.6.1
+mysqlclient==2.0.1
 psycopg2==2.8.6
 pylint==2.6.0
 python-decouple==3.3

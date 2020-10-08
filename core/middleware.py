@@ -21,7 +21,6 @@ class LoginRequiredMiddleWare:
             assert hasattr(request, 'user')
             if not request.user.is_authenticated:
                 path = request.path_info.lstrip('/')
-                print('path', path)
                 if path not in EXEMPT_URLS:
                     return redirect('home:login')
         except AssertionError as e:

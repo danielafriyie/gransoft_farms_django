@@ -60,12 +60,18 @@ def sig_user_accounts_pre_delete(sender, instance, **kwargs):
 
 @receiver(user_logged_in)
 def sig_user_logged_in(sender, user, request, **kwargs):
-    auth_log().info(f"{user.username} logged in at {request.META['REMOTE_ADDR']}")
-    UsersAuthenticationLog.objects.create(auth_user=user, last_login=now())
+    try:
+        auth_log().info(f"{user.username} logged in at {request.META['REMOTE_ADDR']}")
+        UsersAuthenticationLog.objects.create(auth_user=user, last_login=now())
+    except KeyError:
+        pass
 
 
 @receiver(user_logged_out)
 def sig_user_logged_out(sender, user, request, **kwargs):
-    auth_log().info(f"{user.username} logged out at {request.META['REMOTE_ADDR']}")
-    last_row = UsersAuthenticationLog.objects.filter(auth_user=user).last()
-    UsersAuthenticationLog.objects.filter(auth_user=user, pk=last_row.pk).update(last_logout=now())
+    try:
+        auth_log().info(f"{user.username} logged out at {request.META['REMOTE_ADDR']}")
+        last_row = UsersAuthenticationLog.objects.filter(auth_user=user).last()
+        UsersAuthenticationLog.objects.filter(auth_user=user, pk=last_row.pk).update(last_logout=now())
+    except KeyError:
+        pass

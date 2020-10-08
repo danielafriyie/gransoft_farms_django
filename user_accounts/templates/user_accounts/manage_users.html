@@ -6,13 +6,18 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col">
-                    {% if perms.user_accounts.add_user %}
-                        <div class="mb-1">
-                            <a href="{% url 'user_accounts:create_user_account' %}" class="btn btn-info">
+                    <div class="mb-1">
+                        {% if perms.user_accounts.add_user %}
+                            <a href="{% url 'user_accounts:create_user_account' %}" class="btn btn-success">
                                 Create Account
                             </a>
-                        </div>
-                    {% endif %}
+                        {% endif %}
+                        {% if user.is_admin %}
+                            <a href="#" data-toggle="modal" data-target="#set-password-modal" class="btn btn-danger">
+                                Set Password
+                            </a>
+                        {% endif %}
+                    </div>
                     <table class="table table-sm table-bordered table-responsive-md sortable">
                         <caption>Users</caption>
                         <thead class="thead-light">
@@ -87,6 +92,44 @@
                     </table>
                     {% include 'partials/_pagination.html' %}
                     {% include 'partials/_confirm_modal.html' %}
+                    <div class="modal fade" id="set-password-modal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                {#                    modal header #}
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="confirm-modal-title">Set User Password</h5>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                {#                    end of modal header#}
+
+                                {#                    modal body #}
+                                <div class="modal-body">
+                                    <form action="{% url 'user_accounts:set_user_password' %}" method="post"
+                                          enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="custom-form-input">
+                                            <input type="text" class="custom-form-control" name="username"
+                                                   placeholder="username" required>
+                                        </div>
+                                        <div class="custom-form-input">
+                                            <input type="password" class="custom-form-control" name="password1"
+                                                   placeholder="password" required>
+                                        </div>
+                                        <div class="custom-form-input">
+                                            <input type="password" class="custom-form-control" name="password2"
+                                                   placeholder="confirm password" required>
+                                        </div>
+                                        <div class="d-flex justify-content-center align-content-center">
+                                            <input class="btn btn-success w-50 mr-1" type="submit" value="Save">
+                                            <input class="btn btn-danger w-50 ml-1" type="reset" value="Cancel"
+                                                   data-dismiss="modal">
+                                        </div>
+                                    </form>
+                                </div>
+                                {#                    end of modal body #}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

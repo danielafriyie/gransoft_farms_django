@@ -6,11 +6,11 @@ ALLOWED_HOSTS = []
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'gransoft_farms',
-        'USER': 'daniel',
-        'PASSWORD': 'daniel',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'gransoft_farms_django',
+        'USER': 'grandpa',
+        'PASSWORD': 'grandpa2020',
         'HOST': 'localhost',
-        'PORT': 5433
+        'PORT': 3306
     }
 }

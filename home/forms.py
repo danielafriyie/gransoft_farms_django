@@ -19,3 +19,10 @@ class ChangePasswordForm(BaseAuthForm):
     new_password.widget.attrs.update({
         'class': 'user-credentials form-control', 'placeholder': 'new password', 'minlength': '6'
     })
+
+
+class SetUserPasswordForm(BaseAuthForm):
+    confirm_password = forms.CharField(required=True, max_length=100, widget=forms.PasswordInput)
+    confirm_password.widget.attrs.update({
+        'class': 'user-credentials form-control', 'placeholder': 'confirm password', 'minlength': '6'
+    })

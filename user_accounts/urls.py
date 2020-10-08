@@ -7,5 +7,6 @@ urlpatterns = [
     path('manage-users/', views.ManageUserAccount.as_view(), name='manage_users'),
     path('toggle-user-status/', views.ToggleUserStatus.as_view(), name='toggle_user_status'),
     path('delete-user/<int:pk>/', views.DeleteUser.as_view(), name='delete_user'),
-    path('update-user-account/<int:pk>/', views.UpdateUserAccount.as_view(), name='update_user')
+    path('update-user-account/<int:pk>/', views.UpdateUserAccount.as_view(), name='update_user'),
+    path('set-password/', views.SetUserPassword.as_view(), name='set_user_password')
 ]

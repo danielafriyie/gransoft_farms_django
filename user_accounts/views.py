@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages as msg
 from django.views.generic import View
 from django.core.paginator import Paginator
+from django.http import Http404
 
 from mixins import PermissionRequiredMixin, AdminRequiredMixin, DeleteModelObjectMixin
 from .forms import CreateUserAccountForm, AccessRightsForm, UpdateUserAccountForm
@@ -46,7 +47,7 @@ class UpdateUserAccount(PermissionRequiredMixin, View):
         msg.error(request, 'There is an error in your form!')
         return render(request, self.template, self.get_context(pk))
 
-    def get_context(self, pk) -> dict:
+    def get_context(self, pk: int) -> dict:
         global user_
         user_ = get_object_or_404(UserAccountsModel, pk=pk)
         assert_immutable_user(user_)
@@ -84,6 +85,27 @@ class ToggleUserStatus(PermissionRequiredMixin, View):
         assert_immutable_user(user)
         toggle_user_status(user, request.user)
         return redirect('user_accounts:manage_users')
+
+
+class SetUserPassword(AdminRequiredMixin, View):
+
+    def post(self, request):
+        username = request.POST['username']
+        pword1 = request.POST['password1']
+        pword2 = request.POST['password2']
+        try:
+            user = get_object_or_404(UserAccountsModel, username=username)
+            assert_immutable_user(user)
+            if pword1 == pword2:
+                user.set_password(pword2)
+                user.save()
+                msg.success(request, 'Password changed successfully!')
+                return redirect('user_accounts:manage_users')
+            msg.error(request, 'Password does not match!')
+            return redirect('user_accounts:manage_users')
+        except Http404:
+            msg.error(request, 'Username does not exist!')
+            return redirect('user_accounts:manage_users')
 
 
 class DeleteUser(AdminRequiredMixin, DeleteModelObjectMixin, View):
