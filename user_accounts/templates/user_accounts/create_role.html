@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block breadcrumb %} User Accounts &raquo; Create Role {% endblock breadcrumb %}
+
+{% block content %}
+    <section id="create-role">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <form action="{% url 'user_accounts:create_role' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% include 'user_accounts/user_roles_form.html' %}
+
+                        <div class="d-flex justify-content-center mt-3">
+                            <input style="width: 15rem;"
+                                   type="submit" value="Save" name="save" class="btn btn-info mx-1 px-5">
+                            <input style="width: 15rem;"
+                                   type="reset" value="Cancel" name="cancel" class="btn btn-secondary mx-1 px-5">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
+{% block javascript %}
+    {% include 'user_accounts/extra_js.html' %}
+{% endblock javascript %}

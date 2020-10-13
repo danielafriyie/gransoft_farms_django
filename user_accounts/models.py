@@ -73,13 +73,18 @@ class UserAccountsModel(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         permissions = (
-            ('add_user', 'Can add user'),
-            ('update_user', 'Can update user'),
-            ('delete_user', 'Can delete user'),
+            ('add_user', 'Can add user custom'),
+            ('update_user', 'Can update user custom'),
+            ('delete_user', 'Can delete user custom'),
+            ('set_password', 'Can change user password custom'),
+            ('manage_roles', 'Can manage user roles custom'),
+            ('set_immutable_user', 'Can create immutable user custom'),
+            ('view_user_account_audit_trail', 'Can view audit trails custom')
         )
         verbose_name = 'User Account'
         verbose_name_plural = 'User Accounts'
         db_table = 'user_accounts_model'
+        ordering = ['id']
 
 
 class UserAccountsModelAudit(BaseUserAccountsModel):

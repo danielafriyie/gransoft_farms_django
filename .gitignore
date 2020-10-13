@@ -9,3 +9,6 @@ core/settings/prod_settings.py
 /__pycache__/
 user_accounts/migrations
 home/migrations
+bunny.py
+purchases/migrations
+finance/migrations

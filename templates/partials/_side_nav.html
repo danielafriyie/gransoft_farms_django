@@ -37,40 +37,54 @@
                             </a>
                         </li>
 
-                        <li class="py-3">
-                            <a onclick="dropDownMenu(this)" id="user-accounts">
-                                <span style="width: 3rem;"><i class="fa fa-users-cog fa-2x"></i></span>
-                                <span class="pr-3 pt-2">User Accounts</span>
-                            </a>
-                            <div class="sub-menu pl-4 pt-2 pb-0">
-                                <ul>
-                                    {% if perms.user_accounts.add_user %}
-                                        <li>
-                                            <a href="{% url 'user_accounts:create_user_account' %}"
-                                                    {% if 'create-account' in request.path %}
-                                               class="active-sub-module"
-                                                    {% endif %}
-                                            >
-                                                <span style="width: 1rem;"><i class="fa fa-user"></i> </span>
-                                                <span class="pl-3">Create Account</span>
-                                            </a>
-                                        </li>
-                                    {% endif %}
-                                    {% if perms.user_accounts.update_user %}
-                                        <li>
-                                            <a href="{% url 'user_accounts:manage_users' %}"
-                                                    {% if 'manage-users'  in request.path %}
-                                               class="active-sub-module"
-                                                    {% endif %}
-                                            >
-                                                <span style="width: 1rem;"><i class="fa fa-user-friends"></i></span>
-                                                <span class="pl-3">Manage Users</span>
-                                            </a>
-                                        </li>
-                                    {% endif %}
-                                </ul>
-                            </div>
-                        </li>
+                        {% if perms.user_accounts %}
+                            <li class="py-3">
+                                <a onclick="dropDownMenu(this)" id="user-accounts">
+                                    <span style="width: 3rem;"><i class="fa fa-users-cog fa-2x"></i></span>
+                                    <span class="pr-3 pt-2">User Accounts</span>
+                                </a>
+                                <div class="sub-menu pl-4 pt-2 pb-0">
+                                    <ul>
+                                        {% if perms.user_accounts.add_user %}
+                                            <li>
+                                                <a href="{% url 'user_accounts:create_user_account' %}"
+                                                        {% if 'create-account' in request.path %}
+                                                   class="active-sub-module"
+                                                        {% endif %}
+                                                >
+                                                    <span style="width: 1rem;"><i class="fa fa-user"></i> </span>
+                                                    <span class="pl-3">Create Account</span>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% if perms.user_accounts.update_user %}
+                                            <li>
+                                                <a href="{% url 'user_accounts:manage_users' %}"
+                                                        {% if 'manage-users'  in request.path %}
+                                                   class="active-sub-module"
+                                                        {% endif %}
+                                                >
+                                                    <span style="width: 1rem;"><i class="fa fa-user-friends"></i></span>
+                                                    <span class="pl-3">Manage Users</span>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% if perms.user_accounts.manage_roles %}
+                                            <li>
+                                                <a href="{% url 'user_accounts:manage_roles' %}"
+                                                        {% if 'manage-roles'  in request.path %}
+                                                   class="active-sub-module"
+                                                        {% endif %}
+                                                >
+                                                    <span style="width: 1rem;"><i class="fa fa-user-cog"></i></span>
+                                                    <span class="pl-3">Manage Roles</span>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </li>
+                        {% endif %}
 
                         <li class="py-3">
                             <a onclick="dropDownMenu(this)">

@@ -14,12 +14,13 @@ BUILTIN_APPS = [
 
 MYAPPS = [
     'home.apps.HomeConfig',
-    'user_accounts.apps.UserAccountsConfig'
+    'user_accounts.apps.UserAccountsConfig',
+    'finance.apps.FinanceConfig'
 ]
 
 INSTALLED_APPS = BUILTIN_APPS + MYAPPS
 
-MIDDLEWARE = [
+BUILT_MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -27,10 +28,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
 
+MY_MIDDLEWARE = [
     # login required middleware
     'core.middleware.LoginRequiredMiddleWare'
 ]
+
+MIDDLEWARE = BUILT_MIDDLEWARE + MY_MIDDLEWARE
 
 ROOT_URLCONF = 'core.urls'
 

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block breadcrumb %} User Accounts &raquo; Manage Roles {% endblock breadcrumb %}
+
+{% block content %}
+    {% if perms.user_accounts.manage_roles %}
+        <section>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="mb-1 mt-1">
+                            <a href="{% url 'user_accounts:create_role' %}" class="btn btn-success">
+                                Create Role
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <table class="table table-sm table-bordered table-responsive-md sortable">
+                            <thead class="thead-light">
+                            <tr>
+                                <th scope="col" class="text-uppercase">Role id</th>
+                                <th scope="col" class="text-uppercase">Role name</th>
+                                <th scope="col" class="text-uppercase">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% if paginator_pages %}
+                                {% for role in paginator_pages %}
+                                    <tr>
+                                        <th class="m-0 p-0">
+                                            <form action="{% url 'user_accounts:update_role' role.0 %}"
+                                                  method="get" enctype="multipart/form-data">
+                                                <button type="submit" class="btn btn-default">
+                                                    <strong>{{ role.0 }}</strong>
+                                                </button>
+                                            </form>
+                                        </th>
+                                        <td>
+                                            <a href="{% url 'user_accounts:update_role' role.0 %}"
+                                               class="text-decoration-none text-dark">
+                                                {{ role.1 }}
+                                            </a>
+                                        </td>
+                                        <td class="m-0 p-0">
+                                            <a href="#" data-toggle="modal" data-target="#confirm-modal"
+                                               class="text-decoration-none btn btn-default"
+                                               onclick="confirmModal('delete-role-{{ role.1 }}', 'Confirm Delete')">
+                                                <span><i class="fa fa-trash-alt"></i></span>
+                                            </a>
+                                            <form action="{% url 'user_accounts:delete_role' role.0 %}"
+                                                  method="post" enctype="multipart/form-data" style="display: none"
+                                                  id="delete-role-{{ role.1 }}">
+                                                {% csrf_token %}
+                                                <input type="hidden">
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                            </tbody>
+                        </table>
+                        {% include 'partials/_pagination.html' %}
+                        {% include 'partials/_confirm_modal.html' %}
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+{% endblock content %}

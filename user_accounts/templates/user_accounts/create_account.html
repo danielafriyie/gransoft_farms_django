@@ -11,50 +11,61 @@
                               enctype="multipart/form-data">
                             {% csrf_token %}
                             <fieldset class="pt-4">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="custom-form-input">
-                                            {{ form.name }}
-                                        </div>
+                                <div class="">
+                                    <div class="form-group">
+                                        <label for="">Name:</label>
+                                        {{ form.name }}
                                     </div>
-
-                                    <div class="col-md-6">
-                                        <div class="custom-form-input">
-                                            {{ form.phone_no }}
-                                        </div>
+                                </div>
+                                <div class="">
+                                    <div class="form-group">
+                                        <label for="">Phone:</label>
+                                        {{ form.phone_no }}
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="custom-form-input">
-                                            {{ form.gender }}
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="custom-form-input">
-                                            {{ form.date_of_birth }}
-                                        </div>
+                                <div class="">
+                                    <div class="form-group">
+                                        <label for="">Gender:</label>
+                                        {{ form.gender }}
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="custom-form-input">
-                                            {{ form.username }}
-                                        </div>
+                                <div class="">
+                                    <div class="form-group">
+                                        <label for="">Date of Birth:</label>
+                                        {{ form.date_of_birth }}
                                     </div>
+                                </div>
 
-                                    <div class="col-md-6">
-                                        <div class="custom-form-input">
-                                            {{ form.password }}
-                                        </div>
+                                <div class="">
+                                    <div class="form-group">
+                                        <label for="">Username:</label>
+                                        {{ form.username }}
+                                    </div>
+                                </div>
+
+                                <div class="">
+                                    <div class="form-group">
+                                        <label for="">Password:</label>
+                                        {{ form.password }}
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="form-group">
+                                        <label for="role">Role:</label>
+                                        <select name="role" id="role" class="form-control">
+                                            <option value="" selected></option>
+                                            {% if roles %}
+                                                {% for role in roles %}
+                                                    <option value="{{ role.name }}">{{ role.name }}</option>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </select>
                                     </div>
                                 </div>
                             </fieldset>
-
-                            {% include 'user_accounts/access_rights.html' %}
 
                             <div class="d-flex justify-content-center mt-3">
                                 <input style="width: 15rem;"
@@ -69,6 +80,3 @@
         </div>
     </section>
 {% endblock content %}
-{% block javascript %}
-    {% include 'user_accounts/extra_js.html' %}
-{% endblock javascript %}

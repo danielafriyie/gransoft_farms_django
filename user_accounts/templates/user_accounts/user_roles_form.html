@@ -1,0 +1,70 @@
+<style>
+    fieldset table tr,
+    fieldset table th,
+    fieldset table td,
+    fieldset table thead {
+        font-size: inherit !important;
+        white-space: nowrap !important;
+        vertical-align: top !important;
+    }
+</style>
+<fieldset class="mt-3">
+    <div class="">
+        <div class="form-group">
+            {{ role.name }}
+        </div>
+        <div class="form-group form-check my-0">
+            <label class="form-check-label">
+                {{ role.check_all }} Check All
+            </label>
+        </div>
+        <table class="table table-sm table-bordered table-responsive-md">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col" class="text-uppercase text-center">Module</th>
+                <th scope="col" class="text-uppercase text-center">Create</th>
+                <th scope="col" class="text-uppercase text-center">Update</th>
+                <th scope="col" class="text-uppercase text-center">Delete</th>
+                <th scope="col" class="text-uppercase text-center">Audit Trails</th>
+                <th scope="col" class="text-uppercase text-center">Set Password</th>
+                <th scope="col" class="text-uppercase text-center">Manage Roles</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th class="text-center">User Accounts</th>
+                <td>
+                    <div class="form-check text-center">
+                        {{ role.add_user }}
+                    </div>
+                </td>
+                <td>
+                    <div class="form-check text-center">
+                        {{ role.update_user }}
+                    </div>
+                </td>
+                <td>
+                    <div class="form-check text-center">
+                        {{ role.delete_user }}
+                    </div>
+                </td>
+                <td>
+                    <div class="form-check text-center">
+                        {{ role.view_user_account_audit_trail }}
+                    </div>
+                </td>
+                <td>
+                    <div class="form-check text-center">
+                        {{ role.set_password }}
+                    </div>
+                </td>
+                <td>
+                    <div class="form-check text-center">
+                        {{ role.manage_roles }}
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</fieldset>

@@ -4,6 +4,14 @@ html, body {
     overflow-y: hidden;
 }
 
+.no-margin {
+    margin: 0 !important;
+}
+
+.no-padding {
+    padding: 0 !important;
+}
+
 #login-div .auth-btn, #login-form-title {
     background: #17262e !important;
     color: #ebebeb !important;
@@ -219,8 +227,18 @@ html, body {
     #farm-name span {
         font-size: inherit;
     }
+
     #side-nav {
         width: 22% !important;
+    }
+
+    #manage-users .container-fluid table tr,
+    #manage-users .container-fluid table th,
+    #manage-users .container-fluid table td,
+    #manage-users .container-fluid table thead {
+        font-size: inherit !important;
+        white-space: nowrap !important;
+        vertical-align: top !important;
     }
 }
 
