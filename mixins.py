@@ -183,15 +183,24 @@ class PermissionRequiredMixin(GetAttributeDataMixin):
     """
 
     perm = None
+    perms = None
     permission_denied_message = 'Access Denied!'
 
-    @property
-    def get_permission(self):
-        return self.get_attribute_data(self.perm, str, 'perm')
+    def _has_perm(self, user):
+        if self.perm and self.perms:
+            raise ImproperlyConfigured(
+                f"{self.__class__.__name__}: both 'perm' and 'perms' defined. Define only one."
+            )
+        if self.perm:
+            return user.has_perm(self.perm)
+        if self.perms:
+            for perm in self.perms:
+                if user.has_perm(perm):
+                    return True
 
     def dispatch(self, request, *args, **kwargs):
         assert hasattr(request, 'user')
-        if not request.user.has_perm(self.get_permission):
+        if not self._has_perm(request.user):
             msg.warning(request, self.permission_denied_message)
             return redirect('home:homepage')
         return super().dispatch(request, *args, **kwargs)

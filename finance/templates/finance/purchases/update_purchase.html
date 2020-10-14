@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block breadcrumb %} Finance &raquo; Purchases &raquo; Update Purchase {% endblock breadcrumb %}
+
+{% block content %}
+    <section id="update-purchase">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col pt-4">
+                    <form action="{% url 'finance:update_purchase' %}" method="post"
+                          enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="">Supplier Name:</label>
+                                {{ form.supplier_name }}
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="">Phone:</label>
+                                {{ form.phone }}
+                            </div>
+                            <div class="form-group col-12">
+                                <label for="">Address:</label>
+                                {{ form.address }}
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="">Quantity:</label>
+                                {{ form.quantity }}
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="">Unit Price:</label>
+                                {{ form.unit_price }}
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="">Amount:</label>
+                                {{ form.amount }}
+                            </div>
+                            <div class="form-group col-12">
+                                <label for="">Description:</label>
+                                {{ form.description }}
+                            </div>
+                            <div class="form-group col-12" hidden>
+                                <input type="hidden" hidden name="inv_no" value="{{ form.instance.invoice_no }}">
+                            </div>
+                            <div class="form-group col-12" hidden>
+                                <input type="hidden" hidden name="p_id" value="{{ form.instance.pk }}">
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-center mt-3">
+                            <input style="width: 15rem;"
+                                   type="submit" value="Save" name="save" class="btn btn-info mx-1 px-5">
+                            <input style="width: 15rem;"
+                                   type="reset" value="Cancel" name="cancel" class="btn btn-secondary mx-1 px-5">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
+{% block javascript %}
+    {% include 'finance/purchases/extra_js.html' %}
+{% endblock javascript %}

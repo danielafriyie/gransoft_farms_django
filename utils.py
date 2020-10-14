@@ -18,7 +18,11 @@ def get_group_perms(group):
         'delete_user': _group_has_perm(group, 'delete_user'),
         'set_password': _group_has_perm(group, 'set_password'),
         'manage_roles': _group_has_perm(group, 'manage_roles'),
-        'view_user_account_audit_trail': _group_has_perm(group, 'view_user_account_audit_trail')
+        'view_user_account_audit_trail': _group_has_perm(group, 'view_user_account_audit_trail'),
+        'finance_pur_add_new': _group_has_perm(group, 'finance_pur_add_new'),
+        'finance_pur_update': _group_has_perm(group, 'finance_pur_update'),
+        'finance_pur_delete': _group_has_perm(group, 'finance_pur_delete'),
+        'finance_pur_audit_trail': _group_has_perm(group, 'finance_pur_audit_trail')
     }
 
 

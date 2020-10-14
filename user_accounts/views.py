@@ -12,6 +12,9 @@ from .models import UserAccountsModel
 from utils import toggle_user_status, assert_immutable_user, assert_unmatched_pk, get_group_perms
 
 
+#############################################
+#       USER ACCOUNTS
+############################################
 class CreateUserAccount(PermissionRequiredMixin, View):
     perm = 'user_accounts.add_user'
 
@@ -64,22 +67,33 @@ class ManageUserAccount(PermissionRequiredMixin, View):
     perm = 'user_accounts.update_user'
 
     def get(self, request):
-        self.user = request.user
         return render(request, 'user_accounts/manage_users.html', self.get_context)
 
     @property
-    def get_context(self) -> dict:
-        users = UserAccountsModel.objects.order_by('username').filter(
-            is_admin=False, is_superuser=False, is_immutable=False).exclude(
-            username=self.user.username).values_list(
+    def query_set(self):
+        kwargs = {'is_admin': False, 'is_superuser': False, 'is_immutable': False}
+        cols = (
             'id', 'username', 'name', 'phone_no', 'gender', 'date_of_birth', 'groups__name', 'date_created',
             'last_login', 'is_active'
         )
-        paginator = Paginator(users, 25)
-        page = self.request.GET.get('page')
+        exclude = {'username': self.request.user.username}
+        qs = UserAccountsModel.objects.order_by('username').filter(**kwargs).exclude(**exclude).values_list(*cols)
+        if 'gender' in self.request.GET:
+            qs = qs.filter(gender=self.request.GET['gender'])
+        if 'role' in self.request.GET:
+            qs = qs.filter(groups__name__icontains=self.request.GET['role'])
+        if 'search' in self.request.GET:
+            qs = qs.filter(name__icontains=self.request.GET['search'])
+        return qs
+
+    @property
+    def get_context(self) -> dict:
+        paginator, page = Paginator(self.query_set, 25), self.request.GET.get('page')
         paginator_pages = paginator.get_page(page)
         return {
             'paginator_pages': paginator_pages,
+            'roles': Group.objects.all(),
+            'values': self.request.GET
         }
 
 
@@ -122,6 +136,9 @@ class DeleteUser(PermissionRequiredMixin, DeleteModelObjectMixin, View):
     values_list = 'username'
 
 
+#########################################
+#       USER ROLES
+########################################
 class CreateRole(PermissionRequiredMixin, View):
     perm = 'user_accounts.manage_roles'
 
@@ -165,13 +182,19 @@ class ManageRoles(PermissionRequiredMixin, View):
         return render(request, 'user_accounts/manage_roles.html', self.get_context)
 
     @property
+    def query_set(self):
+        qs = Group.objects.order_by('id').values_list('id', 'name')
+        if 'search' in self.request.GET:
+            qs = qs.filter(name__icontains=self.request.GET['search'])
+        return qs
+
+    @property
     def get_context(self) -> dict:
-        roles = Group.objects.order_by('id').values_list('id', 'name')
-        paginator = Paginator(roles, 25)
-        page = self.request.GET.get('page')
+        paginator, page = Paginator(self.query_set, 25), self.request.GET.get('page')
         paginator_pages = paginator.get_page(page)
         return {
             'paginator_pages': paginator_pages,
+            'values': self.request.GET
         }
 
 

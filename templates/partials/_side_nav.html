@@ -48,7 +48,7 @@
                                         {% if perms.user_accounts.add_user %}
                                             <li>
                                                 <a href="{% url 'user_accounts:create_user_account' %}"
-                                                        {% if 'create-account' in request.path %}
+                                                        {% if 'user-accounts/create-account' in request.path %}
                                                    class="active-sub-module"
                                                         {% endif %}
                                                 >
@@ -60,7 +60,7 @@
                                         {% if perms.user_accounts.update_user %}
                                             <li>
                                                 <a href="{% url 'user_accounts:manage_users' %}"
-                                                        {% if 'manage-users'  in request.path %}
+                                                        {% if 'user-accounts/manage-users'  in request.path %}
                                                    class="active-sub-module"
                                                         {% endif %}
                                                 >
@@ -72,7 +72,7 @@
                                         {% if perms.user_accounts.manage_roles %}
                                             <li>
                                                 <a href="{% url 'user_accounts:manage_roles' %}"
-                                                        {% if 'manage-roles'  in request.path %}
+                                                        {% if 'user-accounts/manage-roles'  in request.path %}
                                                    class="active-sub-module"
                                                         {% endif %}
                                                 >
@@ -86,28 +86,33 @@
                             </li>
                         {% endif %}
 
-                        <li class="py-3">
-                            <a onclick="dropDownMenu(this)">
-                                <span style="width: 3rem;"><i class="fa fa-dollar-sign fa-2x"></i></span>
-                                <span class="pr-3 pt-2">Finance</span>
-                            </a>
-                            <div class="sub-menu pl-4 pt-2 pb-0">
-                                <ul>
-                                    <li>
-                                        <a href="">
-                                            <span style="width: 1rem;"><i class="fa fa-shopping-cart"></i> </span>
-                                            <span class="pl-3">Purchases</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="">
-                                            <span style="width: 1rem;"><i class="fa fa-chart-pie"></i></span>
-                                            <span class="pl-3">Sales</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                        {% if perms.finance %}
+                            <li class="py-3">
+                                <a onclick="dropDownMenu(this)" id="finance-module">
+                                    <span style="width: 3rem;"><i class="fa fa-dollar-sign fa-2x"></i></span>
+                                    <span class="pr-3 pt-2">Finance</span>
+                                </a>
+                                <div class="sub-menu pl-4 pt-2 pb-0">
+                                    <ul>
+                                        <li>
+                                            <a href="{% url 'finance:manage_purchases' %}"
+                                                    {% if '/finance/purchases/' in request.path %}
+                                               class="active-sub-module"
+                                                    {% endif %}>
+                                                <span style="width: 1rem;"><i class="fa fa-shopping-cart"></i> </span>
+                                                <span class="pl-3">Purchases</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="">
+                                                <span style="width: 1rem;"><i class="fa fa-chart-pie"></i></span>
+                                                <span class="pl-3">Sales</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        {% endif %}
 
                         <li class="py-3">
                             <a onclick="dropDownMenu(this)">

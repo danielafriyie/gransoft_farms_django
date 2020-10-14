@@ -198,6 +198,22 @@ html, body {
     width: 100% !important;
 }
 
+#result_table table tr,
+#result_table table th,
+#result_table table td,
+#result_table table thead {
+    font-size: inherit !important;
+    white-space: nowrap !important;
+    vertical-align: top !important;
+}
+
+#filtering a,
+#filtering input,
+#filtering button {
+    font-size: inherit !important;
+    white-space: nowrap !important;
+}
+
 
 /* media queries */
 @media screen and (max-width: 1449px) {
@@ -252,11 +268,19 @@ html, body {
     #side-nav {
         width: 50% !important;
     }
+
+    #sub-filtering {
+        display: block !important;
+    }
 }
 
 @media screen and (max-width: 600px) {
     #side-nav {
         width: 75% !important;
+    }
+
+    #filtering {
+        display: block !important;
     }
 }
 

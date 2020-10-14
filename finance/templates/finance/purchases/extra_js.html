@@ -1,0 +1,13 @@
+<script>
+    let qty = document.getElementById('id_quantity');
+    let u_p = document.getElementById('id_unit_price');
+    let amt = document.getElementById('id_amount');
+
+    function calcAmount() {
+        amt.value = qty.value * u_p.value
+    }
+
+    qty.addEventListener('input', calcAmount);
+    u_p.addEventListener('input', calcAmount);
+    {#amt.addEventListener('input', calcAmount);#}
+</script>

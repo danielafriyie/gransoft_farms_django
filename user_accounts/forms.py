@@ -16,6 +16,14 @@ class BaseRoleForm(forms.Form):
     manage_roles = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), required=False)
     view_user_account_audit_trail = forms.BooleanField(widget=forms.CheckboxInput(attrs={
         'class': 'form-check-input'}), required=False)
+    finance_pur_add_new = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+                                             required=False)
+    finance_pur_update = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+                                            required=False)
+    finance_pur_delete = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+                                            required=False)
+    finance_pur_audit_trail = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+                                                 required=False)
 
     @property
     def get_form_data(self):
@@ -27,7 +35,11 @@ class BaseRoleForm(forms.Form):
                 'delete_user': self.cleaned_data['delete_user'],
                 'set_password': self.cleaned_data['set_password'],
                 'manage_roles': self.cleaned_data['manage_roles'],
-                'view_user_account_audit_trail': self.cleaned_data['view_user_account_audit_trail']
+                'view_user_account_audit_trail': self.cleaned_data['view_user_account_audit_trail'],
+                'finance_pur_add_new': self.cleaned_data['finance_pur_add_new'],
+                'finance_pur_update': self.cleaned_data['finance_pur_update'],
+                'finance_pur_delete': self.cleaned_data['finance_pur_delete'],
+                'finance_pur_audit_trail': self.cleaned_data['finance_pur_audit_trail']
             }
         return self.form_data
 

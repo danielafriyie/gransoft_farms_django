@@ -6,11 +6,27 @@
         <section>
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-12">
-                        <div class="mb-1 mt-1">
+                    <div class="col-12 mb-1 d-flex" id="filtering">
+                        <div class="m-1">
                             <a href="{% url 'user_accounts:create_role' %}" class="btn btn-success">
                                 Create Role
                             </a>
+                        </div>
+                        <div class="mx-1 mt-1">
+                            <form action="{% url 'user_accounts:manage_roles' %}" method="get">
+                                {% csrf_token %}
+                                <div class="input-group">
+                                    <input type="text" name="search" placeholder="search"
+                                           class="form-control" value="{{ values.search }}"
+                                           required style="width: 20rem;">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-info" type="submit" style="width: 6rem;">
+                                            <i class="fa fa-search"></i>
+                                            Search
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <div class="col-12">

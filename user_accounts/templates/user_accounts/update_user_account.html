@@ -12,49 +12,51 @@
                               enctype="multipart/form-data">
                             {% csrf_token %}
                             <fieldset class="pt-4">
-                                <div class="">
-                                    <div class="form-group">
-                                        <label for="">Name:</label>
-                                        {{ form.name }}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="">Name:</label>
+                                            {{ form.name }}
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="">
-                                    <div class="form-group">
-                                        <label for="">Phone:</label>
-                                        {{ form.phone_no }}
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="">Phone:</label>
+                                            {{ form.phone_no }}
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="">
-                                    <div class="form-group">
-                                        <label for="">Gender:</label>
-                                        {{ form.gender }}
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="">Gender:</label>
+                                            {{ form.gender }}
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="">
-                                    <div class="form-group">
-                                        <label for="">Date of Birth:</label>
-                                        {{ form.date_of_birth }}
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="">Date of Birth:</label>
+                                            {{ form.date_of_birth }}
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div>
-                                    <div class="form-group">
-                                        <label for="role">Role:</label>
-                                        <select name="role" id="role" class="form-control">
-                                            <option value=""></option>
-                                            {% if roles %}
-                                                {% for role in roles %}
-                                                    {% if role == user_group %}
-                                                        <option value="{{ role.name }}"
-                                                                selected>{{ role.name }}</option>
-                                                    {% else %}
-                                                        <option value="{{ role.name }}">{{ role.name }}</option>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            {% endif %}
-                                        </select>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="role">Role:</label>
+                                            <select name="role" id="role" class="form-control">
+                                                <option value=""></option>
+                                                {% if roles %}
+                                                    {% for role in roles %}
+                                                        {% if role == user_group %}
+                                                            <option value="{{ role.name }}"
+                                                                    selected>{{ role.name }}</option>
+                                                        {% else %}
+                                                            <option value="{{ role.name }}">{{ role.name }}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </fieldset>

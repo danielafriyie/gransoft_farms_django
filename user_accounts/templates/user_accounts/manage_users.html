@@ -2,20 +2,89 @@
 {% block breadcrumb %} User Accounts &raquo; Manage Users {% endblock breadcrumb %}
 
 {% block content %}
+    <style>
+        @media screen and (max-width: 1024px) {
+            #filtering {
+                display: block !important;
+            }
+        }
+    </style>
     <section id="manage-users" class="p-md-1 p-sm-0">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <div class="mb-1 mt-1">
+                    <div class="mb-1 mt-1 d-flex" id="filtering">
                         {% if perms.user_accounts.add_user %}
-                            <a href="{% url 'user_accounts:create_user_account' %}" class="btn btn-success">
+                            <a href="{% url 'user_accounts:create_user_account' %}" class="btn btn-success mt-1 mx-1">
                                 Create Account
                             </a>
                         {% endif %}
                         {% if perms.user_accounts.set_password %}
-                            <a href="#" data-toggle="modal" data-target="#set-password-modal" class="btn btn-danger">
+                            <a href="#" data-toggle="modal" data-target="#set-password-modal"
+                               class="btn btn-danger mt-1 mx-1">
                                 Set Password
                             </a>
+                        {% endif %}
+                        {% if perms.user_accounts.update_user %}
+                            <div id="sub-filtering" class="d-flex">
+                                <div class="mx-1 mt-1">
+                                    <form action="{% url 'user_accounts:manage_users' %}" method="get" class="m-0 p-0">
+                                        {% csrf_token %}
+                                        <div class="input-group">
+                                            <select name="gender" id="" required class="form-control">
+                                                <option value="{{ values.gender }}">{{ values.gender }}</option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <button class="btn btn-info" type="submit" name="filter"
+                                                        style="width: 6rem;">
+                                                    <i class="fa fa-genderless"></i>
+                                                    Gender
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="mx-1 mt-1">
+                                    <form action="{% url 'user_accounts:manage_users' %}" method="get" class="m-0 p-0">
+                                        {% csrf_token %}
+                                        <div class="input-group">
+                                            <select name="role" id="" required class="form-control">
+                                                <option value="{{ values.role }}">{{ values.role }}</option>
+                                                {% if roles %}
+                                                    {% for role in roles %}
+                                                        <option value="{{ role.name }}">{{ role.name }}</option>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </select>
+                                            <div class="input-group-append">
+                                                <button class="btn btn-info" type="submit" name="filter"
+                                                        style="width: 6rem;">
+                                                    <i class="fa fa-hand-pointer"></i>
+                                                    Role
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="mx-1 mt-1">
+                                    <form action="{% url 'user_accounts:manage_users' %}" method="get">
+                                        {% csrf_token %}
+                                        <div class="input-group">
+                                            <input type="text" name="search" placeholder="search"
+                                                   class="form-control" value="{{ values.search }}"
+                                                   required style="width: 20rem;">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-info" type="submit" style="width: 6rem;">
+                                                    <i class="fa fa-search"></i>
+                                                    Search
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         {% endif %}
                     </div>
                 </div>

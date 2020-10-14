@@ -7,11 +7,16 @@ let overlay = document.getElementById('side-nav-overlay');
 
 $(document).ready(function () {
     let userAccountModule = document.getElementById('user-accounts');
+    let financeModule = document.getElementById('finance-module');
     let requestPath = window.location.pathname;
 
-    if (requestPath.includes('user-accounts')) {
+    if (requestPath.includes('/user-accounts')) {
         userAccountModule.classList.add('active-module');
         $(userAccountModule.nextElementSibling).show();
+    }
+    if (requestPath.includes('/finance')) {
+        financeModule.classList.add('active-module');
+        $(financeModule.nextElementSibling).show()
     }
 });
 
