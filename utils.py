@@ -1,4 +1,6 @@
 from django.contrib.auth.models import Permission
+from django.http import HttpResponse
+from openpyxl import Workbook
 from exceptions_ import ImmutableUserError, UnmatchedPkError
 
 
@@ -22,7 +24,8 @@ def get_group_perms(group):
         'finance_pur_add_new': _group_has_perm(group, 'finance_pur_add_new'),
         'finance_pur_update': _group_has_perm(group, 'finance_pur_update'),
         'finance_pur_delete': _group_has_perm(group, 'finance_pur_delete'),
-        'finance_pur_audit_trail': _group_has_perm(group, 'finance_pur_audit_trail')
+        'finance_pur_audit_trail': _group_has_perm(group, 'finance_pur_audit_trail'),
+        'finance_pur_report': _group_has_perm(group, 'finance_pur_report')
     }
 
 
@@ -53,3 +56,35 @@ def assert_unmatched_pk(pk1, pk2):
         assert int(pk1) == int(pk2)
     except AssertionError:
         raise UnmatchedPkError(f'{pk1} != {pk2}')
+
+
+def dump_to_excel(query_set, columns, filename):
+    """
+    Dumps django model query set to excel using pandas
+    """
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    )
+    response['Content-Disposition'] = f'attachment; filename={filename}.xlsx'
+    workbook = Workbook()
+    worksheet = workbook.active
+    row_num = 1
+
+    # Assign the titles for each cell of the header
+    for col_num, column_title in enumerate(columns, 1):
+        cell = worksheet.cell(row=row_num, column=col_num)
+        cell.value = column_title
+
+    for data in query_set:
+        row_num += 1
+
+        # Define the data for each cell in the row
+        row = [data[i] for i in range(len(columns))]
+
+        # Assign the data for each cell of the row
+        for col_num, cell_value in enumerate(row, 1):
+            cell = worksheet.cell(row=row_num, column=col_num)
+            cell.value = cell_value
+
+    workbook.save(response)
+    return response

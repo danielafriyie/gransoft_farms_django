@@ -16,7 +16,8 @@ def _create_purcase_audit(instance, action):
         date_created=instance.date_created,
         invoice_no=instance.invoice_no,
         purchase_id=instance.pk,
-        auth_user=instance.auth_user.pk,
+        auth_user=instance.auth_user.username,
+        is_default=instance.is_default,
         action_flag=action
     )
 

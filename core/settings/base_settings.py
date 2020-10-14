@@ -15,7 +15,8 @@ BUILTIN_APPS = [
 MYAPPS = [
     'home.apps.HomeConfig',
     'user_accounts.apps.UserAccountsConfig',
-    'finance.apps.FinanceConfig'
+    'finance.apps.FinanceConfig',
+    'reports.apps.ReportsConfig'
 ]
 
 INSTALLED_APPS = BUILTIN_APPS + MYAPPS
@@ -86,3 +87,4 @@ MESSAGE_TAGS = {
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 AUTH_USER_MODEL = 'user_accounts.UserAccountsModel'
+CONN_MAX_AGE = 30

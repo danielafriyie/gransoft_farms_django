@@ -5,16 +5,16 @@
     <section id="manage-purchases">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-12 d-flex pt-1 mb-1" id="filtering">
+                <div class="col-12 d-flex" id="filtering">
                     {% if perms.finance.finance_pur_add_new %}
-                        <div class="mx-1 mt-1">
+                        <div class="m-1">
                             <a href="{% url 'finance:create_purchase' %}" class="btn btn-success">
                                 Add New
                             </a>
                         </div>
                     {% endif %}
                     {% if perms.finance.finance_pur_update %}
-                        <div class="mx-1 mt-1">
+                        <div class="m-1">
                             <form action="{% url 'finance:manage_purchases' %}" method="get" class="m-0 p-0">
                                 {% csrf_token %}
                                 <div class="input-group">
@@ -33,7 +33,7 @@
                         </div>
                     {% endif %}
                     {% if perms.finance.finance_pur_update %}
-                        <div class="mx-1 mt-1">
+                        <div class="m-1">
                             <form action="{% url 'finance:manage_purchases' %}" method="get">
                                 {% csrf_token %}
                                 <div class="input-group">
@@ -79,7 +79,7 @@
                                                       method="get" enctype="multipart/form-data">
                                                     <input type="hidden" name="inv_no" value="{{ purchase.4 }}">
                                                     <button type="submit" class="btn btn-default">
-                                                        {{ purchase.1 }}
+                                                        <strong>{{ purchase.1 }}</strong>
                                                     </button>
                                                 </form>
                                             </th>

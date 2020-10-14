@@ -7,10 +7,9 @@ ALLOWED_HOSTS = []
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'gransoft_farms_django',
-        'USER': 'grandpa',
-        'PASSWORD': 'grandpa2020',
-        'HOST': 'localhost',
-        'PORT': 3306
+        'OPTIONS': {
+            'read_default_file': os.path.join(BASE_DIR, 'server_config.cnf'),
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        },
     }
 }

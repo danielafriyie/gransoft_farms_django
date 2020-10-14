@@ -25,6 +25,7 @@
                 <th scope="col" class="text-uppercase text-center">Create</th>
                 <th scope="col" class="text-uppercase text-center">Update</th>
                 <th scope="col" class="text-uppercase text-center">Delete</th>
+                <th scope="col" class="text-uppercase text-center">Reports</th>
                 <th scope="col" class="text-uppercase text-center">Audit Trails</th>
                 <th scope="col" class="text-uppercase text-center">Set Password</th>
                 <th scope="col" class="text-uppercase text-center">Manage Roles</th>
@@ -48,6 +49,7 @@
                         {{ role.delete_user }}
                     </div>
                 </td>
+                <td></td>
                 <td>
                     <div class="form-check text-center">
                         {{ role.view_user_account_audit_trail }}
@@ -83,9 +85,16 @@
                 </td>
                 <td>
                     <div class="form-check text-center">
+                        {{ role.finance_pur_report }}
+                    </div>
+                </td>
+                <td>
+                    <div class="form-check text-center">
                         {{ role.finance_pur_audit_trail }}
                     </div>
                 </td>
+                <td></td>
+                <td></td>
             </tr>
             </tbody>
         </table>

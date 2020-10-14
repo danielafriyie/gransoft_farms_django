@@ -8,6 +8,8 @@ from .models import UserAccountsModel
 class BaseRoleForm(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'form-control', 'placeholder': 'name'}), required=True)
+
+    # user account permissions
     check_all = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), required=False)
     add_user = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), required=False)
     update_user = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), required=False)
@@ -16,6 +18,8 @@ class BaseRoleForm(forms.Form):
     manage_roles = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), required=False)
     view_user_account_audit_trail = forms.BooleanField(widget=forms.CheckboxInput(attrs={
         'class': 'form-check-input'}), required=False)
+
+    # finance permissions
     finance_pur_add_new = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
                                              required=False)
     finance_pur_update = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
@@ -24,6 +28,8 @@ class BaseRoleForm(forms.Form):
                                             required=False)
     finance_pur_audit_trail = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
                                                  required=False)
+    finance_pur_report = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+                                            required=False)
 
     @property
     def get_form_data(self):
@@ -39,7 +45,8 @@ class BaseRoleForm(forms.Form):
                 'finance_pur_add_new': self.cleaned_data['finance_pur_add_new'],
                 'finance_pur_update': self.cleaned_data['finance_pur_update'],
                 'finance_pur_delete': self.cleaned_data['finance_pur_delete'],
-                'finance_pur_audit_trail': self.cleaned_data['finance_pur_audit_trail']
+                'finance_pur_audit_trail': self.cleaned_data['finance_pur_audit_trail'],
+                'finance_pur_report': self.cleaned_data['finance_pur_report']
             }
         return self.form_data
 

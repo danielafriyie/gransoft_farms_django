@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block breadcrumb %} Reports &raquo; Purchases Audit {% endblock breadcrumb %}
+
+{% block content %}
+    <section id="purchase-report">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 d-flex" id="filtering">
+                    <div class="m-1">
+                        <form action="{% url 'reports:purchase_audit_report' %}" method="get" class="m-0 p-0">
+                            {% csrf_token %}
+                            <div class="input-group" id="filtering">
+                                <input type="date" name="date1" class="form-control"
+                                       value="{{ values.date1 }}" required>
+                                <input type="date" name="date2" class="form-control"
+                                       value="{{ values.date2 }}" required>
+                                <div class="input-group-append">
+                                    <button class="mx-1 btn btn-info" type="submit" name="filter">
+                                        <i class="fa fa-calendar-alt"></i>
+                                        Filter
+                                    </button>
+
+                                    <button class="mx-1 btn btn-success" type="submit" name="export" value="export">
+                                        <i class="fa fa-file-excel"></i>
+                                        Export
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div id="result_table">
+                        <table class="table table-sm table-bordered table-responsive-md sortable">
+                            <thead class="thead-light">
+                            <tr>
+                                <th scope="col" class="text-uppercase">Supplier name</th>
+                                <th scope="col" class="text-uppercase">Phone</th>
+                                <th scope="col" class="text-uppercase">Address</th>
+                                <th scope="col" class="text-uppercase">Invoice No.</th>
+                                <th scope="col" class="text-uppercase"> Date</th>
+                                <th scope="col" class="text-uppercase">Quantity</th>
+                                <th scope="col" class="text-uppercase">Unit price</th>
+                                <th scope="col" class="text-uppercase">Amount</th>
+                                <th scope="col" class="text-uppercase">Action Flag</th>
+                                <th scope="col" class="text-uppercase">Auth User</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% if paginator_pages %}
+                                {% for purchase in paginator_pages %}
+                                    <tr>
+                                        <th class="font-weight-normal">{{ purchase.0 }}</th>
+                                        <td>{{ purchase.1 }}</td>
+                                        <td>{{ purchase.2 }}</td>
+                                        <td>{{ purchase.3 }}</td>
+                                        <td>{{ purchase.4|date:'Y-M-d' }}</td>
+                                        <td>{{ purchase.5 }}</td>
+                                        <td>{{ purchase.6 }}</td>
+                                        <td>{{ purchase.7 }}</td>
+                                        <td>{{ purchase.8 }}</td>
+                                        <td>{{ purchase.9 }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% include 'partials/_pagination.html' %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

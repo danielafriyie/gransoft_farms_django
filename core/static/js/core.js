@@ -8,6 +8,7 @@ let overlay = document.getElementById('side-nav-overlay');
 $(document).ready(function () {
     let userAccountModule = document.getElementById('user-accounts');
     let financeModule = document.getElementById('finance-module');
+    let reportModule = document.getElementById('reports-module');
     let requestPath = window.location.pathname;
 
     if (requestPath.includes('/user-accounts')) {
@@ -17,6 +18,10 @@ $(document).ready(function () {
     if (requestPath.includes('/finance')) {
         financeModule.classList.add('active-module');
         $(financeModule.nextElementSibling).show()
+    }
+
+    if (requestPath.includes('/reports')) {
+        reportModule.classList.add('active-module');
     }
 });
 

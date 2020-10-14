@@ -1,8 +1,11 @@
 from django.core.exceptions import ImproperlyConfigured, FieldError, ObjectDoesNotExist
 from django.contrib import messages as msg
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.db.models.base import ModelBase
 from django.http import Http404
+from django.core.paginator import Paginator
+
+from utils import dump_to_excel
 
 
 class GetAttributeDataMixin:
@@ -214,3 +217,54 @@ class AdminRequiredMixin:
             msg.warning(request, 'Access Denied!')
             return redirect('home:homepage')
         return super().dispatch(request, *args, **kwargs)
+
+
+class ReportViewMixin:
+    template = None
+    excel_cols = None
+    query_cols = None
+    request_kwarg = 'export'
+    model = None
+    exclude_dict = None
+    order_col = None
+    export_filename = None
+
+    def _check_required_attribute(self):
+        required_attr = (
+            self.template, self.excel_cols, self.query_cols, self.request_kwarg,
+            self.model, self.export_filename, self.order_col
+        )
+        return all(required_attr)
+
+    def get(self, request):
+        if not self._check_required_attribute():
+            raise ImproperlyConfigured(
+                f"{self.__class__.__name__} is missing required attribute. Required attributes are: "
+                f"['template', 'excel_cols', 'query_cols', 'request_kwarg', 'model', 'export_filename']"
+            )
+        if self.request_kwarg in request.GET:
+            return dump_to_excel(self.query_set, self.excel_cols, self.export_filename)
+        return render(request, self.template, self.context)
+
+    def query_set_data(self, **extra_filtering):
+        extra_filtering.update(self.exclude_dict) if self.exclude_dict else None
+        return self.model.objects.order_by(self.order_col).values_list(
+            *self.query_cols).filter(**extra_filtering)
+
+    @property
+    def query_set(self):
+        if ('date1' and 'date2') in self.request.GET:
+            d1, d2 = self.request.GET['date1'], self.request.GET['date2']
+            return self.query_set_data(date_created__gte=d1, date_created__lte=d2)
+
+    @property
+    def context(self):
+        try:
+            paginator, page = Paginator(self.query_set, 25), self.request.GET.get('page')
+            paginator_pages = paginator.get_page(page)
+            return {
+                'paginator_pages': paginator_pages,
+                'values': self.request.GET
+            }
+        except TypeError:
+            return {}

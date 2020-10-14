@@ -3,11 +3,16 @@ from django.views.generic import View
 from django.contrib import messages as msg
 from django.core.paginator import Paginator
 
+from datetime import datetime as dt
+
 from mixins import PermissionRequiredMixin, DeleteModelObjectMixin
 from .forms import CreatePurchaseForm, UpdatePurchaseForm
 from .models import PurchasesModel
 
 
+###############################################
+#       PURCHASES
+#############################################
 class CreatePurchase(PermissionRequiredMixin, View):
     perm = 'finance.finance_pur_add_new'
 
@@ -49,21 +54,28 @@ class ManagePurchases(PermissionRequiredMixin, View):
     def get(self, request):
         return render(request, 'finance/purchases/manage_purchases.html', self.context)
 
-    @property
-    def query_set(self):
-        dc = '-date_created'
+    @staticmethod
+    def purchase_data(**filtering):
         cols = (
             'id', 'supplier_name', 'phone', 'address', 'invoice_no', 'date_created',
             'quantity', 'unit_price', 'amount'
         )
-        qs = PurchasesModel.objects.order_by(dc).values_list(*cols)
+        return PurchasesModel.objects.order_by('-date_created').values_list(*cols).filter(**filtering, is_default=False)
+
+    @property
+    def query_set(self):
+        cd = dt.now().date()  # current date
+        qs = self.purchase_data(date_created__gte=cd, date_created__lte=cd)
+
         if ('date1' and 'date2') in self.request.GET:
-            qs = qs.filter(date_created__gte=self.request.GET['date1'], date_created__lte=self.request.GET['date2'])
+            d1, d2 = self.request.GET['date1'], self.request.GET['date2']
+            qs = self.purchase_data(date_created__gte=d1, date_created__lte=d2)
+
         if 'search' in self.request.GET:
             search = self.request.GET['search']
-            qs = qs.filter(invoice_no__icontains=search)
+            qs = self.purchase_data(invoice_no__icontains=search)
             if not qs:
-                qs = PurchasesModel.objects.order_by(dc).values_list(*cols).filter(supplier_name__icontains=search)
+                qs = self.purchase_data(supplier_name__icontains=search)
         return qs
 
     @property

@@ -12,3 +12,7 @@ home/migrations
 bunny.py
 purchases/migrations
 finance/migrations
+server_config.cnf
+reports/migrations
+purchases.xls
+purchases.xlsx

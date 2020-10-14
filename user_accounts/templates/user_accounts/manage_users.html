@@ -9,25 +9,25 @@
             }
         }
     </style>
-    <section id="manage-users" class="p-md-1 p-sm-0">
+    <section id="manage-users" class="">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <div class="mb-1 mt-1 d-flex" id="filtering">
+                    <div class="d-flex" id="filtering">
                         {% if perms.user_accounts.add_user %}
-                            <a href="{% url 'user_accounts:create_user_account' %}" class="btn btn-success mt-1 mx-1">
+                            <a href="{% url 'user_accounts:create_user_account' %}" class="btn btn-success m-1">
                                 Create Account
                             </a>
                         {% endif %}
                         {% if perms.user_accounts.set_password %}
                             <a href="#" data-toggle="modal" data-target="#set-password-modal"
-                               class="btn btn-danger mt-1 mx-1">
+                               class="btn btn-danger m-1">
                                 Set Password
                             </a>
                         {% endif %}
                         {% if perms.user_accounts.update_user %}
                             <div id="sub-filtering" class="d-flex">
-                                <div class="mx-1 mt-1">
+                                <div class="m-1">
                                     <form action="{% url 'user_accounts:manage_users' %}" method="get" class="m-0 p-0">
                                         {% csrf_token %}
                                         <div class="input-group">
@@ -46,7 +46,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div class="mx-1 mt-1">
+                                <div class="m-1">
                                     <form action="{% url 'user_accounts:manage_users' %}" method="get" class="m-0 p-0">
                                         {% csrf_token %}
                                         <div class="input-group">
@@ -68,7 +68,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div class="mx-1 mt-1">
+                                <div class="m-1">
                                     <form action="{% url 'user_accounts:manage_users' %}" method="get">
                                         {% csrf_token %}
                                         <div class="input-group">
