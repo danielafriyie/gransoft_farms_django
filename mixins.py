@@ -5,6 +5,8 @@ from django.db.models.base import ModelBase
 from django.http import Http404
 from django.core.paginator import Paginator
 
+import re
+
 from utils import dump_to_excel
 
 
@@ -219,52 +221,151 @@ class AdminRequiredMixin:
         return super().dispatch(request, *args, **kwargs)
 
 
-class ReportViewMixin:
+class ExcludeUrlKwargsMixin:
+    """
+    Exclude kwargs in urls from the url.
+    >>> url = '/someurl/?page=4'
+    >>> url = self._exclude_url_kwargs(url)
+    >>> url
+    >>> '/someurl/'
+    """
+    exclude_url_kwargs_pattern = r'&page=\d*'
+
+    def _any(self, *args):
+        for arg in args:
+            if arg in self.request.GET:
+                return True
+
+    def _exclude_url_kwargs(self, *url_kwargs):
+        if self._any(*url_kwargs):
+            query_path = self.request.get_full_path()
+            exclude_url_kwargs = re.compile(self.exclude_url_kwargs_pattern).findall(query_path)
+            if exclude_url_kwargs:
+                for url_kwarg in exclude_url_kwargs:
+                    query_path = query_path.strip(url_kwarg)
+            return query_path
+
+
+class ReportViewMixin(ExcludeUrlKwargsMixin):
+    """
+    View for creating report with a return rendered by template attribute.
+    """
     template = None
     excel_cols = None
     query_cols = None
     request_kwarg = 'export'
     model = None
-    exclude_dict = None
+    exclude_kwargs = None
     order_col = None
     export_filename = None
-
-    def _check_required_attribute(self):
-        required_attr = (
-            self.template, self.excel_cols, self.query_cols, self.request_kwarg,
-            self.model, self.export_filename, self.order_col
-        )
-        return all(required_attr)
+    date1_request_kwarg = 'date1'
+    date2_request_kwarg = 'date2'
+    filter_date_field = 'date_created'
 
     def get(self, request):
-        if not self._check_required_attribute():
-            raise ImproperlyConfigured(
-                f"{self.__class__.__name__} is missing required attribute. Required attributes are: "
-                f"['template', 'excel_cols', 'query_cols', 'request_kwarg', 'model', 'export_filename']"
-            )
         if self.request_kwarg in request.GET:
             return dump_to_excel(self.query_set, self.excel_cols, self.export_filename)
         return render(request, self.template, self.context)
 
     def query_set_data(self, **extra_filtering):
-        extra_filtering.update(self.exclude_dict) if self.exclude_dict else None
+        extra_filtering.update(self.exclude_kwargs) if self.exclude_kwargs else None
         return self.model.objects.order_by(self.order_col).values_list(
             *self.query_cols).filter(**extra_filtering)
 
     @property
     def query_set(self):
-        if ('date1' and 'date2') in self.request.GET:
-            d1, d2 = self.request.GET['date1'], self.request.GET['date2']
-            return self.query_set_data(date_created__gte=d1, date_created__lte=d2)
+        if (self.date1_request_kwarg and self.date2_request_kwarg) in self.request.GET:
+            filter_dict = {
+                f"{self.filter_date_field}__gte": self.request.GET[self.date1_request_kwarg],
+                f'{self.filter_date_field}__lte': self.request.GET[self.date2_request_kwarg]
+            }
+            return self.query_set_data(**filter_dict)
 
     @property
     def context(self):
         try:
             paginator, page = Paginator(self.query_set, 25), self.request.GET.get('page')
             paginator_pages = paginator.get_page(page)
+
+            query_path = self._exclude_url_kwargs(self.date1_request_kwarg, self.date2_request_kwarg)
+
             return {
                 'paginator_pages': paginator_pages,
-                'values': self.request.GET
+                'values': self.request.GET,
+                'query_path': query_path
             }
         except TypeError:
             return {}
+
+
+class ManageModuleViewMixin(ExcludeUrlKwargsMixin):
+    template = None
+    model = None
+    values_list_cols = None
+    order_col = None
+    url_filter_kwargs = None
+    extra_context = None
+
+    def get(self, request):
+        return render(request, self.template, self.get_context)
+
+    @property
+    def query_set(self):
+        qs = self.model.objects.all()
+        if self.order_col:
+            qs = qs.order_by(self.order_col)
+        if self.values_list_cols:
+            qs = qs.values_list(*self.values_list_cols)
+
+        filter_kwargs = {}
+
+        if self.url_filter_kwargs:
+            for kwarg, field in self.url_filter_kwargs:
+                if kwarg in self.request.GET and self.request.GET[kwarg]:
+                    filter_kwargs.update({field: self.request.GET[kwarg]})
+
+        return qs.filter(**filter_kwargs) if filter_kwargs else qs
+
+    @property
+    def get_context(self):
+        page = self.request.GET.get('page')
+        paginator = Paginator(self.query_set, 25)
+        paginator_pages = paginator.get_page(page)
+
+        exclude_url_kwargs = [i[0] for i in self.url_filter_kwargs] if self.url_filter_kwargs else None
+
+        context = {
+            'paginator_pages': paginator_pages,
+            'values': self.request.GET,
+            'query_path': self._exclude_url_kwargs(*exclude_url_kwargs) if exclude_url_kwargs else None
+        }
+        context.update(self.extra_context) if self.extra_context else None
+
+        return context
+
+
+class ModuleAccesRedirectMixin:
+    """
+    Redirects a user to requested module (the user will be redirected to the earliest or first
+    available sub module which he has access or has required permission to access in the main module).
+    perm_link attribute is a tuple containing tuples of sub modules link and their required permission
+    """
+    perm_link = None
+    permission_denied_message = 'Access Denied!'
+
+    @property
+    def _get_latest_sub_module_link(self):
+        if not self.perm_link:
+            raise ImproperlyConfigured(
+                f"{self.__class__.__name__} is missing 'perm_link' attribute, define it"
+                f"or override '_get_latest_sub_module_link' method."
+            )
+        user = self.request.user
+        for link, perm in self.perm_link:
+            if user.has_perm(perm):
+                return link
+        msg.warning(self.request, self.permission_denied_message)
+        return redirect('home:homepage')
+
+    def get(self, request):
+        return redirect(self._get_latest_sub_module_link)

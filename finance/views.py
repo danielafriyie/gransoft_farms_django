@@ -5,9 +5,16 @@ from django.core.paginator import Paginator
 
 from datetime import datetime as dt
 
-from mixins import PermissionRequiredMixin, DeleteModelObjectMixin
+from mixins import PermissionRequiredMixin, DeleteModelObjectMixin, ModuleAccesRedirectMixin, ManageModuleViewMixin
 from .forms import CreatePurchaseForm, UpdatePurchaseForm
 from .models import PurchasesModel
+
+
+class MainModuleMixin(ModuleAccesRedirectMixin, View):
+    perm_link = (
+        ('finance:create_purchase', 'finance.finance_pur_add_new'),
+        ('finance:manage_purchases', 'finance.finance_pur_update'),
+    )
 
 
 ###############################################
@@ -48,30 +55,30 @@ class UpdatePurchase(PermissionRequiredMixin, View):
         return render(request, 'finance/purchases/update_purchase.html', {'form': form})
 
 
-class ManagePurchases(PermissionRequiredMixin, View):
-    perms = ['finance.finance_pur_update', 'finance.finance_pur_add_new', 'finance.finance_pur_delete']
+class ManagePurchases(PermissionRequiredMixin, ManageModuleViewMixin, View):
+    perm = 'finance.finance_pur_update'
+    template = 'finance/purchases/manage_purchases.html'
+    model = PurchasesModel
+    values_list_cols = (
+        'id', 'supplier_name', 'phone', 'address', 'invoice_no', 'date_created',
+        'quantity', 'unit_price', 'amount'
+    )
+    order_col = '-date_created'
 
-    def get(self, request):
-        return render(request, 'finance/purchases/manage_purchases.html', self.context)
-
-    @staticmethod
-    def purchase_data(**filtering):
-        cols = (
-            'id', 'supplier_name', 'phone', 'address', 'invoice_no', 'date_created',
-            'quantity', 'unit_price', 'amount'
-        )
-        return PurchasesModel.objects.order_by('-date_created').values_list(*cols).filter(**filtering, is_default=False)
+    def purchase_data(self, **filters):
+        return super().query_set.filter(**filters, is_default=False)
 
     @property
     def query_set(self):
         cd = dt.now().date()  # current date
         qs = self.purchase_data(date_created__gte=cd, date_created__lte=cd)
 
-        if ('date1' and 'date2') in self.request.GET:
-            d1, d2 = self.request.GET['date1'], self.request.GET['date2']
-            qs = self.purchase_data(date_created__gte=d1, date_created__lte=d2)
+        if ('date1' and 'date2') in self.request.GET and all([self.request.GET['date1'], self.request.GET['date2']]):
+            qs = self.purchase_data(
+                date_created__gte=self.request.GET['date1'], date_created__lte=self.request.GET['date2']
+            )
 
-        if 'search' in self.request.GET:
+        if 'search' in self.request.GET and self.request.GET['search']:
             search = self.request.GET['search']
             qs = self.purchase_data(invoice_no__icontains=search)
             if not qs:
@@ -79,13 +86,26 @@ class ManagePurchases(PermissionRequiredMixin, View):
         return qs
 
     @property
-    def context(self):
+    def get_context(self):
         paginator, page = Paginator(self.query_set, 25), self.request.GET.get('page')
         paginator_pages = paginator.get_page(page)
-        return {
+
+        query_path = None
+        if ('date1' or 'date2' or 'search') in self.request.GET:
+            import re
+            query_path = self.request.get_full_path()
+            exclude_url_kwargs = re.compile(self.exclude_url_kwargs_pattern).findall(query_path)
+            if exclude_url_kwargs:
+                for url_kwarg in exclude_url_kwargs:
+                    query_path = query_path.strip(url_kwarg)
+
+        context = {
             'paginator_pages': paginator_pages,
-            'values': self.request.GET
+            'values': self.request.GET,
+            'query_path': query_path
         }
+
+        return context
 
 
 class DeletePurchase(PermissionRequiredMixin, DeleteModelObjectMixin, View):

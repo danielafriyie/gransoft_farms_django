@@ -19,7 +19,14 @@
                         </li>
                     {% else %}
                         <li class="page-item">
-                            <a href="?page={{ i }}" class="page-link">{{ i }}</a>
+                            <a {% if query_path %}
+                                href="{{ query_path }}&page={{ i }}"
+                            {% else %}
+                                href="?page={{ i }}"
+                            {% endif %}
+                                class="page-link">
+                                {{ i }}
+                            </a>
                         </li>
                     {% endif %}
                 {% endfor %}

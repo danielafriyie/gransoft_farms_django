@@ -12,6 +12,24 @@ html, body {
     padding: 0 !important;
 }
 
+#top-bar nav {
+    background: #17262e !important;
+    color: #ebebeb !important;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-bottom: 0;
+    padding-top: 0;
+}
+
+#top-bar nav div a{
+    color: #ebebeb;
+    height: 8vh !important;
+}
+
+#top-bar nav .navbar-toggler {
+    background: #ebebeb !important;
+}
+
 #login-div .auth-btn, #login-form-title {
     background: #17262e !important;
     color: #ebebeb !important;
@@ -281,6 +299,10 @@ html, body {
 
     #filtering {
         display: block !important;
+    }
+
+    #top-bar #modules-navbar div {
+        padding-top: 8rem;
     }
 }
 

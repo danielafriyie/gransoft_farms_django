@@ -8,7 +8,6 @@
                 <div class="col-12 d-flex" id="filtering">
                     <div class="m-1">
                         <form action="{% url 'reports:purchase_audit_report' %}" method="get" class="m-0 p-0">
-                            {% csrf_token %}
                             <div class="input-group" id="filtering">
                                 <input type="date" name="date1" class="form-control"
                                        value="{{ values.date1 }}" required>

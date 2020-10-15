@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'user_accounts/base_user_template.html' %}
 {% block breadcrumb %} User Accounts &raquo; Manage Roles {% endblock breadcrumb %}
 
 {% block content %}
@@ -14,7 +14,6 @@
                         </div>
                         <div class="m-1">
                             <form action="{% url 'user_accounts:manage_roles' %}" method="get">
-                                {% csrf_token %}
                                 <div class="input-group">
                                     <input type="text" name="search" placeholder="search"
                                            class="form-control" value="{{ values.search }}"

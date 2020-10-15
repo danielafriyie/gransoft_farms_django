@@ -4,25 +4,33 @@ let topBar = document.getElementById('top-bar');
 let mainContent = document.getElementById('main-content');
 let breadcrumbs = document.getElementById('bread-crumbs');
 let overlay = document.getElementById('side-nav-overlay');
+let requestPath = window.location.pathname;
+
+function setActiveModule(path, module, showSubMenu = false) {
+    if (requestPath.includes(path)) {
+        module.classList.add('active-module');
+
+        if (showSubMenu) {
+            $(module.nextElementSibling).show()
+        }
+    }
+}
 
 $(document).ready(function () {
     let userAccountModule = document.getElementById('user-accounts');
+    let userAccountsNav = document.getElementById('user-accounts-nav');
+    setActiveModule('/user-accounts', userAccountModule, true);
+    setActiveModule('/user-accounts', userAccountsNav);
+
+
     let financeModule = document.getElementById('finance-module');
+    setActiveModule('/finance', financeModule);
+
+    let financePurchaseModule = document.getElementById('finance-purchases-module');
+    setActiveModule('/finance/purchases', financePurchaseModule, true);
+
     let reportModule = document.getElementById('reports-module');
-    let requestPath = window.location.pathname;
-
-    if (requestPath.includes('/user-accounts')) {
-        userAccountModule.classList.add('active-module');
-        $(userAccountModule.nextElementSibling).show();
-    }
-    if (requestPath.includes('/finance')) {
-        financeModule.classList.add('active-module');
-        $(financeModule.nextElementSibling).show()
-    }
-
-    if (requestPath.includes('/reports')) {
-        reportModule.classList.add('active-module');
-    }
+    setActiveModule('/reports', reportModule);
 });
 
 if (window.matchMedia('(min-width: 1450px)').matches) {

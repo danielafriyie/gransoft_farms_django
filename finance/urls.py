@@ -1,9 +1,13 @@
 from django.urls import path, include
 from .views import (
-    CreatePurchase, ManagePurchases, DeletePurchase, UpdatePurchase
+    CreatePurchase, ManagePurchases, DeletePurchase, UpdatePurchase, MainModuleMixin
 )
 
 app_name = 'finance'
+
+main_link = [
+    path('', MainModuleMixin.as_view(), name='main_module')
+]
 
 purchase_urls = [
     path('purchases/', include([
@@ -14,4 +18,4 @@ purchase_urls = [
     ]))
 ]
 
-urlpatterns = purchase_urls
+urlpatterns = main_link + purchase_urls

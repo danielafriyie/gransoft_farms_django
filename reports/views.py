@@ -21,7 +21,7 @@ class PurchasesReport(PermissionRequiredMixin, ReportViewMixin, View):
         'quantity', 'unit_price', 'amount', 'description',
     )
     model = PurchasesModel
-    exclude_dict = {'is_default': False}
+    exclude_kwargs = {'is_default': False}
     order_col = '-date_created'
     export_filename = 'purchases'
 
@@ -38,6 +38,6 @@ class PurchasesAuditReport(PermissionRequiredMixin, ReportViewMixin, View):
         'quantity', 'unit_price', 'amount', 'action_flag', 'auth_user', 'description',
     )
     model = PurchasesModelAudit
-    exclude_dict = {'is_default': False}
+    exclude_kwargs = {'is_default': False}
     order_col = '-date_created'
     export_filename = 'purchases audit'

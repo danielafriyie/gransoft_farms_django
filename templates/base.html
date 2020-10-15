@@ -4,7 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{{ user.username }}</title>
+    <title>
+        {% if company %}
+            {{ company.name }}
+        {% endif %} -
+        {{ user.username }}
+    </title>
     <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
@@ -21,7 +26,62 @@
     </div>
 
     <div id="">
-        {% include 'partials/_side_nav.html' %}
+        <style>
+            #user-profile {
+                background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("{% static 'img/bg_pic2.jpg' %}") center/cover no-repeat !important;
+                width: 100%;
+            }
+        </style>
+
+        <section id="side-nav" class="animated ">
+            <div class="container-fluid" style="padding: 0; margin: 0;">
+                <div class="row">
+                    <div class="col">
+                        <div id="user-profile">
+                            <div id="user-pic">
+                                <i id="user-icon" class="fa fa-user-circle fa-9x text-white"></i>
+                            </div>
+                            <div id="username">
+                                <a>{{ user.username }}</a>
+                            </div>
+                        </div>
+                        <div id="modules" class="mt-5">
+                            <ul>
+                                {% if user.is_superuser %}
+                                    <li class="pb-3">
+                                        <a href="/gransoft-farms-admin-code-efc123go9090/">
+                                            <span style="width: 3rem;"><i class="fa fa-cogs fa-2x"></i></span>
+                                            <span class="pr-3 pt-2">Administration</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+
+                                <!-- <li class="py-3">
+                                    <a href="">
+                                        <span style="width: 3rem;"><i class="fa fa-chart-area fa-2x"></i></span>
+                                        <span class="pr-3 pt-2">Dashboard</span>
+                                    </a>
+                                </li> -->
+
+                                {% block modules %} {% endblock modules %}
+
+                                <li class="py-3">
+                                    <a href="javascript:{document.getElementById('logout').submit()}">
+                                        <span style="width: 3rem;"><i class="fa fa-sign-out-alt fa-2x"></i></span>
+                                        <span class="pr-3 pt-2">Logout</span>
+                                    </a>
+                                    <form action="{% url 'home:logout' %}" method="POST" id="logout"
+                                          style="display: none">
+                                        {% csrf_token %}
+                                        <input type="hidden">
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 </div>
 {# end of nav bar #}

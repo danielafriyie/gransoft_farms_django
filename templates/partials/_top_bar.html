@@ -8,12 +8,29 @@
             </div>
         </div>
     </div>
-
-    <div id="farm-name">
-        <span>
-            {% if company %}
-                {{ company.name }}
-            {% endif %}
-        </span>
-    </div>
+    <nav id="modules-navbar" class="navbar navbar-expand-md navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                {% if perms.user_accounts %}
+                    <a href="{% url 'user_accounts:main_module' %}" class="nav-item nav-link" id="user-accounts-nav">
+                        User Accounts
+                    </a>
+                {% endif %}
+                {% if perms.finance %}
+                    <a href="{% url 'finance:main_module' %}" class="nav-item nav-link" id="finance-module">Finance</a>
+                {% endif %}
+                <a href="" class="nav-item nav-link">Medicine/Feeds</a>
+                <a href="" class="nav-item nav-link">Birds</a>
+                <a href="" class="nav-item nav-link">Eggs</a>
+                <a href="{% url 'reports:reports_home' %}" class="nav-item nav-link" id="reports-module">
+                    Reports
+                </a>
+            </div>
+        </div>
+    </nav>
 </section>
