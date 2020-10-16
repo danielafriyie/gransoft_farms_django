@@ -29,6 +29,11 @@ $(document).ready(function () {
     let financePurchaseModule = document.getElementById('finance-purchases-module');
     setActiveModule('/finance/purchases', financePurchaseModule, true);
 
+    let medFeedsModule = document.getElementById('med-feeds-module');
+    let medsModule = document.getElementById('medicine-module');
+    let feedsModule = document.getElementById('feeds-module');
+    setActiveModule('meds-feeds/', medFeedsModule);
+
     let reportModule = document.getElementById('reports-module');
     setActiveModule('/reports', reportModule);
 });

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block breadcrumb %} Reports &raquo; Purchases Audit {% endblock breadcrumb %}
+{% load humanize %}
 
 {% block content %}
     <section id="purchase-report">
@@ -24,6 +25,16 @@
                                         Export
                                     </button>
                                 </div>
+
+                                <input type="text" name="search" placeholder="search"
+                                       class="form-control ml-1" value="{{ values.search }}"
+                                       style="width: 20rem;">
+                                <div class="input-group-append">
+                                    <button class="btn btn-info" type="submit">
+                                        <i class="fa fa-search"></i>
+                                        Search
+                                    </button>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -33,6 +44,7 @@
                         <table class="table table-sm table-bordered table-responsive-md sortable">
                             <thead class="thead-light">
                             <tr>
+                                <th scope="col" class="text-uppercase">Purchase ID</th>
                                 <th scope="col" class="text-uppercase">Supplier name</th>
                                 <th scope="col" class="text-uppercase">Phone</th>
                                 <th scope="col" class="text-uppercase">Address</th>
@@ -53,12 +65,13 @@
                                         <td>{{ purchase.1 }}</td>
                                         <td>{{ purchase.2 }}</td>
                                         <td>{{ purchase.3 }}</td>
-                                        <td>{{ purchase.4|date:'Y-M-d' }}</td>
-                                        <td>{{ purchase.5 }}</td>
-                                        <td>{{ purchase.6 }}</td>
-                                        <td>{{ purchase.7 }}</td>
-                                        <td>{{ purchase.8 }}</td>
+                                        <td>{{ purchase.4 }}</td>
+                                        <td>{{ purchase.5|date:'Y-M-d' }}</td>
+                                        <td>{{ purchase.6|intcomma }}</td>
+                                        <td>{{ purchase.7|intcomma }}</td>
+                                        <td>{{ purchase.8|intcomma }}</td>
                                         <td>{{ purchase.9 }}</td>
+                                        <td>{{ purchase.10 }}</td>
                                     </tr>
                                 {% endfor %}
                             {% endif %}

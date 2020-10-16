@@ -10,13 +10,15 @@ BUILTIN_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize'
 ]
 
 MYAPPS = [
     'home.apps.HomeConfig',
     'user_accounts.apps.UserAccountsConfig',
     'finance.apps.FinanceConfig',
-    'reports.apps.ReportsConfig'
+    'reports.apps.ReportsConfig',
+    'med_feeds.apps.MedFeedsConfig'
 ]
 
 INSTALLED_APPS = BUILTIN_APPS + MYAPPS

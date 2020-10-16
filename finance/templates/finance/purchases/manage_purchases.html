@@ -1,5 +1,6 @@
 {% extends 'finance/base_finance_template.html' %}
 {% block breadcrumb %}  Finance &raquo; Purchases &raquo; Manage Purchases {% endblock breadcrumb %}
+{% load humanize %}
 
 {% block content %}
     <section id="manage-purchases">
@@ -77,8 +78,8 @@
                                                 <td>{{ purchase.4 }}</td>
                                                 <td>{{ purchase.5|date:'Y-M-d' }}</td>
                                                 <td>{{ purchase.6 }}</td>
-                                                <td>{{ purchase.7 }}</td>
-                                                <td>{{ purchase.8 }}</td>
+                                                <td>{{ purchase.7|intcomma }}</td>
+                                                <td>{{ purchase.8|intcomma }}</td>
                                                 {% if perms.finance.finance_pur_delete %}
                                                     <td class="m-0 p-0">
                                                         <a href="#" data-toggle="modal" data-target="#confirm-modal"

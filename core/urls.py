@@ -8,5 +8,6 @@ urlpatterns = [
     path('user-accounts/', include('user_accounts.urls')),
     path('finance/', include('finance.urls')),
     path('reports/', include('reports.urls')),
+    # path('meds-feeds/', include('med_feeds.urls')),
     path('gransoft-farms-admin-code-efc123go9090/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

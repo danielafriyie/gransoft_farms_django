@@ -24,7 +24,11 @@
                 {% if perms.finance %}
                     <a href="{% url 'finance:main_module' %}" class="nav-item nav-link" id="finance-module">Finance</a>
                 {% endif %}
-                <a href="" class="nav-item nav-link">Medicine/Feeds</a>
+                {% if perms.med_feeds %}
+                    <a href="" class="nav-item nav-link" id="med-feeds-module">
+                        Medicine/Feeds
+                    </a>
+                {% endif %}
                 <a href="" class="nav-item nav-link">Birds</a>
                 <a href="" class="nav-item nav-link">Eggs</a>
                 <a href="{% url 'reports:reports_home' %}" class="nav-item nav-link" id="reports-module">
