@@ -91,7 +91,7 @@ class GetModelObjectMixin(GetAttributeDataMixin):
 
             # check if extra_kwargs_field exist in the model or queryset
             try:
-                self.get_query_set().values_list(self.extra_kwargs_field)
+                self.get_query_set.values_list(self.extra_kwargs_field)
                 self.params[self.extra_kwargs_field] = extra_kwargs
             except FieldError:
                 raise FieldError(

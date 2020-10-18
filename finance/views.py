@@ -87,9 +87,6 @@ class ManagePurchases(PermissionRequiredMixin, ManageModuleViewMixin, View):
 
     @property
     def get_context(self):
-        paginator, page = Paginator(self.query_set, 25), self.request.GET.get('page')
-        paginator_pages = paginator.get_page(page)
-
         query_path = None
         if ('date1' or 'date2' or 'search') in self.request.GET:
             import re
@@ -99,11 +96,9 @@ class ManagePurchases(PermissionRequiredMixin, ManageModuleViewMixin, View):
                 for url_kwarg in exclude_url_kwargs:
                     query_path = query_path.strip(url_kwarg)
 
-        context = {
-            'paginator_pages': paginator_pages,
-            'values': self.request.GET,
-            'query_path': query_path
-        }
+        context = super().get_context
+        context.pop('query_path')
+        context['query_path'] = query_path
 
         return context
 

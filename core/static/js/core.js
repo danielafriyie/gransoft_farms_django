@@ -6,36 +6,30 @@ let breadcrumbs = document.getElementById('bread-crumbs');
 let overlay = document.getElementById('side-nav-overlay');
 let requestPath = window.location.pathname;
 
-function setActiveModule(path, module, showSubMenu = false) {
+function setActiveModule(path, elm_id, showSubMenu = false) {
+    let elm = document.getElementById(elm_id);
     if (requestPath.includes(path)) {
-        module.classList.add('active-module');
+        elm.classList.add('active-module');
 
         if (showSubMenu) {
-            $(module.nextElementSibling).show()
+            $(elm.nextElementSibling).show()
         }
     }
 }
 
 $(document).ready(function () {
-    let userAccountModule = document.getElementById('user-accounts');
-    let userAccountsNav = document.getElementById('user-accounts-nav');
-    setActiveModule('/user-accounts', userAccountModule, true);
-    setActiveModule('/user-accounts', userAccountsNav);
+    setActiveModule('/user-accounts', 'user-accounts', true);
+    setActiveModule('/user-accounts', 'user-accounts-nav');
 
+    setActiveModule('/finance', 'finance-module');
 
-    let financeModule = document.getElementById('finance-module');
-    setActiveModule('/finance', financeModule);
+    setActiveModule('/finance/purchases', 'finance-purchases-module', true);
 
-    let financePurchaseModule = document.getElementById('finance-purchases-module');
-    setActiveModule('/finance/purchases', financePurchaseModule, true);
+    // let medsModule = document.getElementById('medicine-module');
+    // let feedsModule = document.getElementById('feeds-module');
+    setActiveModule('meds-feeds/', 'med-feeds-module');
 
-    let medFeedsModule = document.getElementById('med-feeds-module');
-    let medsModule = document.getElementById('medicine-module');
-    let feedsModule = document.getElementById('feeds-module');
-    setActiveModule('meds-feeds/', medFeedsModule);
-
-    let reportModule = document.getElementById('reports-module');
-    setActiveModule('/reports', reportModule);
+    setActiveModule('/reports', 'reports-module');
 });
 
 if (window.matchMedia('(min-width: 1450px)').matches) {
