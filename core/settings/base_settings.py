@@ -13,7 +13,11 @@ BUILTIN_APPS = [
     'django.contrib.humanize'
 ]
 
-MYAPPS = [
+THIRD_PARTY_APPS = [
+    'dynamic_formsets'
+]
+
+MY_APPS = [
     'home.apps.HomeConfig',
     'user_accounts.apps.UserAccountsConfig',
     'finance.apps.FinanceConfig',
@@ -21,7 +25,7 @@ MYAPPS = [
     'med_feeds.apps.MedFeedsConfig'
 ]
 
-INSTALLED_APPS = BUILTIN_APPS + MYAPPS
+INSTALLED_APPS = BUILTIN_APPS + THIRD_PARTY_APPS + MY_APPS
 
 BUILT_MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

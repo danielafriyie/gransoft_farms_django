@@ -52,9 +52,6 @@
                                         <th scope="col" class="text-uppercase">Address</th>
                                         <th scope="col" class="text-uppercase">Invoice No.</th>
                                         <th scope="col" class="text-uppercase"> Date</th>
-                                        <th scope="col" class="text-uppercase">Quantity</th>
-                                        <th scope="col" class="text-uppercase">Unit price</th>
-                                        <th scope="col" class="text-uppercase">Amount</th>
                                         {% if perms.finance.finance_pur_delete %}
                                             <th class="table-head text-uppercase" scope="col">Action</th>
                                         {% endif %}
@@ -77,9 +74,6 @@
                                                 <td>{{ purchase.3 }}</td>
                                                 <td>{{ purchase.4 }}</td>
                                                 <td>{{ purchase.5|date:'Y-M-d' }}</td>
-                                                <td>{{ purchase.6 }}</td>
-                                                <td>{{ purchase.7|intcomma }}</td>
-                                                <td>{{ purchase.8|intcomma }}</td>
                                                 {% if perms.finance.finance_pur_delete %}
                                                     <td class="m-0 p-0">
                                                         <a href="#" data-toggle="modal" data-target="#confirm-modal"

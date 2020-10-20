@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View
 from django.contrib import messages as msg
-from django.core.paginator import Paginator
 
 from datetime import datetime as dt
 
 from mixins import PermissionRequiredMixin, DeleteModelObjectMixin, ModuleAccesRedirectMixin, ManageModuleViewMixin
-from .forms import CreatePurchaseForm, UpdatePurchaseForm
-from .models import PurchasesModel
+from .forms import (
+    CreatePurchaseForm, UpdatePurchaseForm, CreatePurchaseDetailFormSet, UpdatePurchaseDetailFormSet,
+    base_purchase_detail_formset
+)
+from .models import PurchaseModel, PurchaseDetail
 
 
 class MainModuleMixin(ModuleAccesRedirectMixin, View):
@@ -24,44 +26,66 @@ class CreatePurchase(PermissionRequiredMixin, View):
     perm = 'finance.finance_pur_add_new'
 
     def get(self, request):
-        form = CreatePurchaseForm(initial={'auth_user': request.user})
-        return render(request, 'finance/purchases/create_purchase.html', {'form': form})
+        return render(request, 'finance/purchases/create_purchase.html', {
+            'form': CreatePurchaseForm(initial={'auth_user': self.request.user}),
+            'purchase_detail_form': CreatePurchaseDetailFormSet(queryset=PurchaseDetail.objects.none()),
+        })
 
     def post(self, request):
         form = CreatePurchaseForm(request.POST)
-        if form.is_valid():
-            form.save()
+        purchase_detail_form = CreatePurchaseDetailFormSet(data=request.POST)
+        if form.is_valid() and purchase_detail_form.is_valid():
+            purchase_detail_form.instance = form.save()
+            purchase_detail_form.save()
             msg.success(request, 'Purchase created successfully!')
             return redirect('finance:create_purchase')
         msg.error(request, 'There\'s an error in your form!')
-        return render(request, 'finance/purchases/create_purchase.html', {'form': form})
+        return render(request, 'finance/purchases/create_purchase.html', {
+            'form': form,
+            'purchase_detail_form': purchase_detail_form
+        })
 
 
 class UpdatePurchase(PermissionRequiredMixin, View):
     perms = 'finance.finance_pur_update'
+    template = 'finance/purchases/update_purchase.html'
 
     def get(self, request):
-        purchase = get_object_or_404(PurchasesModel, invoice_no=request.GET['inv_no'])
+        purchase = get_object_or_404(PurchaseModel, invoice_no=request.GET['inv_no'])
         form = UpdatePurchaseForm(instance=purchase)
-        return render(request, 'finance/purchases/update_purchase.html', {'form': form})
+        purchase_detail_form = UpdatePurchaseDetailFormSet(instance=purchase)
+        return render(request, 'finance/purchases/update_purchase.html', {
+            'form': form,
+            'purchase_detail_form': purchase_detail_form,
+        })
 
     def post(self, request):
+        purchase = get_object_or_404(PurchaseModel, invoice_no=request.POST['inv_no'], pk=request.POST['p_id'])
         form = UpdatePurchaseForm(request.POST)
-        if form.is_valid():
+        purchase_detail_form = UpdatePurchaseDetailFormSet(data=request.POST, instance=purchase)
+        if form.is_valid() and purchase_detail_form.is_valid():
             form.save(request.user, request.POST['p_id'], request.POST['inv_no'])
+            purchase_detail_form.save_existing_objects()
             msg.success(request, 'Purchase updated successfully!')
             return redirect('finance:manage_purchases')
+
+        for f in purchase_detail_form.forms:
+            print(f.errors)
+            print()
         msg.error(request, 'There\'s an error in your form!')
-        return render(request, 'finance/purchases/update_purchase.html', {'form': form})
+        return render(request, self.template, {
+            'form': form,
+            'purchase_detail_form': purchase_detail_form,
+        })
 
 
 class ManagePurchases(PermissionRequiredMixin, ManageModuleViewMixin, View):
     perm = 'finance.finance_pur_update'
     template = 'finance/purchases/manage_purchases.html'
-    model = PurchasesModel
+    model = PurchaseModel
     values_list_cols = (
         'id', 'supplier_name', 'phone', 'address', 'invoice_no', 'date_created',
-        'quantity', 'unit_price', 'amount'
+        # 'purchasedetail__quantity', 'purchasedetail__unit_price', 'purchasedetail__amount'
     )
     order_col = '-date_created'
 
@@ -96,15 +120,14 @@ class ManagePurchases(PermissionRequiredMixin, ManageModuleViewMixin, View):
                 for url_kwarg in exclude_url_kwargs:
                     query_path = query_path.strip(url_kwarg)
 
-        context = super().get_context
-        context.pop('query_path')
-        context['query_path'] = query_path
+        super().get_context.pop('query_path')
+        super().get_context['query_path'] = query_path
 
-        return context
+        return super().get_context
 
 
 class DeletePurchase(PermissionRequiredMixin, DeleteModelObjectMixin, View):
     perm = 'finance.finance_pur_delete'
-    model = PurchasesModel
+    model = PurchaseModel
     success_url = 'finance:manage_purchases'
     values_list = 'invoice_no'

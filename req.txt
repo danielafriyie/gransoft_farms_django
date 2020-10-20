@@ -3,6 +3,7 @@ asgiref==3.2.10
 astroid==2.4.2
 colorama==0.4.3
 Django==3.1.1
+django-dynamic-formsets==0.0.8
 et-xmlfile==1.0.1
 future==0.18.2
 isort==5.5.3

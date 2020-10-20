@@ -5,10 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>
+        {{ user.username }} -
         {% if company %}
             {{ company.name }}
-        {% endif %} -
-        {{ user.username }}
+        {% endif %}
     </title>
     <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
@@ -112,6 +112,18 @@
 <script rel="script" src="{% static 'js/all.min.js' %}"></script>
 <script rel="script" src="{% static 'js/sorttable.js' %}"></script>
 <script rel="script" src="{% static 'js/core.js' %}"></script>
+<script rel="script" src="{% static 'dynamic_formsets/jquery.formset.js' %}"></script>
+<script type="text/javascript">
+    $('.dynamic-formset').formset({
+        prefix: 'purchasedetail_set',
+        addCssClass: 'btn btn-success ml-3 my-1 dynamic-add-btn',
+        deleteCssClass: 'btn btn-danger mt-4 h-100 dynamic-delete-btn',
+        uiText: {
+            addPrompt: '<i class="fa fa-plus-circle"></i>',
+            removePrompt: '<i class="fa fa-trash-alt"></i>'
+        },
+    });
+</script>
 {% block javascript %} {% endblock javascript %}
 </body>
 </html>

@@ -8,6 +8,7 @@
                 <div class="col pt-4">
                     <form action="{% url 'finance:create_purchase' %}" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
+                        {#                        {{ form.media }}#}
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="">Supplier Name:</label>
@@ -30,24 +31,35 @@
                                     </div>
                                 {% endif %}
                             </div>
-                            <div class="form-group col-md-4">
-                                <label for="">Quantity:</label>
-                                {{ form.quantity }}
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="">Unit Price:</label>
-                                {{ form.unit_price }}
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="">Amount:</label>
-                                {{ form.amount }}
-                            </div>
-                            <div class="form-group col-12">
-                                <label for="">Description:</label>
-                                {{ form.description }}
+                            <div class="col-12 dynamic-formset">
+                                {{ purchase_detail_form.management_form }}
+                                {% for field in purchase_detail_form %}
+                                    <div class="row">
+                                        <div class="form-group col-md-2">
+                                            <label for=""></label>
+                                            {{ field.quantity }}
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <label for=""></label>
+                                            {{ field.unit_price }}
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <label for=""></label>
+                                            {{ field.amount }}
+                                        </div>
+                                        <div class="form-group col-md-5">
+                                            <label for=""></label>
+                                            {{ field.description }}
+                                        </div>
+                                        <div class="form-group col-md-2" hidden>
+                                            <label for=""></label>
+                                            {{ field.invoice_no }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
                             </div>
                             <div class="form-group col-12" hidden>
-                                <label for="">Description:</label>
+                                <label for=""></label>
                                 {{ form.auth_user }}
                             </div>
                         </div>

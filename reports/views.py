@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import View
 
 from mixins import PermissionRequiredMixin, ReportViewMixin
-from finance.models import PurchasesModel, PurchasesModelAudit
+from finance.models import PurchaseModel, PurchaseModelAudit
 
 
 def reports_home(request):
@@ -35,7 +35,7 @@ class PurchasesReport(PermissionRequiredMixin, BasePurchasesReport, View):
         'id', 'supplier_name', 'phone', 'address', 'invoice_no', 'date_created',
         'quantity', 'unit_price', 'amount', 'description',
     )
-    model = PurchasesModel
+    model = PurchaseModel
     export_filename = 'purchases'
 
 
@@ -50,5 +50,5 @@ class PurchasesAuditReport(PermissionRequiredMixin, BasePurchasesReport, View):
         'purchase_id', 'supplier_name', 'phone', 'address', 'invoice_no', 'date_created',
         'quantity', 'unit_price', 'amount', 'action_flag', 'auth_user', 'description',
     )
-    model = PurchasesModelAudit
+    model = PurchaseModelAudit
     export_filename = 'purchases audit'

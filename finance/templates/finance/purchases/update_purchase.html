@@ -22,27 +22,42 @@
                                 <label for="">Address:</label>
                                 {{ form.address }}
                             </div>
-                            <div class="form-group col-md-4">
-                                <label for="">Quantity:</label>
-                                {{ form.quantity }}
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="">Unit Price:</label>
-                                {{ form.unit_price }}
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="">Amount:</label>
-                                {{ form.amount }}
-                            </div>
-                            <div class="form-group col-12">
-                                <label for="">Description:</label>
-                                {{ form.description }}
-                            </div>
                             <div class="form-group col-12" hidden>
                                 <input type="hidden" hidden name="inv_no" value="{{ form.instance.invoice_no }}">
                             </div>
                             <div class="form-group col-12" hidden>
                                 <input type="hidden" hidden name="p_id" value="{{ form.instance.pk }}">
+                            </div>
+                        </div>
+                        <div class="col-12 dynamic-formset">
+                            {{ purchase_detail_form.management_form }}
+                            <div class="row">
+                                {% for form in purchase_detail_form %}
+                                    <div class="form-group col-md-2">
+                                        <label for=""></label>
+                                        {{ form.quantity }}
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for=""></label>
+                                        {{ form.unit_price }}
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for=""></label>
+                                        {{ form.amount }}
+                                    </div>
+                                    <div class="form-group col-md-5">
+                                        <label for=""></label>
+                                        {{ form.description }}
+                                    </div>
+                                    <div class="form-group col-md-2" hidden>
+                                        <label for=""></label>
+                                        {{ form.invoice_no }}
+                                    </div>
+                                    <div class="form-group col-md-2" hidden>
+                                        <label for=""></label>
+                                        {{ form.id }}
+                                    </div>
+                                {% endfor %}
                             </div>
                         </div>
 
@@ -59,5 +74,31 @@
     </section>
 {% endblock content %}
 {% block javascript %}
-    {% include 'finance/purchases/extra_js.html' %}
+    <script>
+        let addBtn = document.getElementsByClassName('dynamic-add-btn')[0];
+
+        function setAmountValue(a, q, u) {
+            a.value = q.value * u.value
+        }
+
+        let i;
+
+        function setcalcAmountListener() {
+            for (i = 0; i < 20; i++) {
+                let qty = document.getElementById(`id_form-${i}-quantity`);
+                let u_p = document.getElementById(`id_form-${i}-unit_price`);
+                let amt = document.getElementById(`id_form-${i}-amount`);
+
+                qty.addEventListener('input', function () {
+                    setAmountValue(amt, qty, u_p)
+                });
+                u_p.addEventListener('input', function () {
+                    setAmountValue(amt, qty, u_p)
+                });
+            }
+        }
+
+        setcalcAmountListener();
+        addBtn.addEventListener('click', setcalcAmountListener);
+    </script>
 {% endblock javascript %}
