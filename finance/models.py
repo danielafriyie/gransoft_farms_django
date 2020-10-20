@@ -56,6 +56,10 @@ class PurchaseDetail(models.Model):
 class PurchaseModelAudit(BasePurchasesModel):
     invoice_no = models.CharField(max_length=35)
     purchase_id = models.IntegerField()
+    quantity = models.FloatField(null=True, blank=True)
+    unit_price = models.FloatField(null=True, blank=True)
+    amount = models.FloatField(null=True, blank=True)
+    description = models.CharField(max_length=255, null=True, blank=True)
     auth_user = models.CharField(max_length=35)
     action_flag = models.CharField(max_length=20)
 
@@ -64,18 +68,17 @@ class PurchaseModelAudit(BasePurchasesModel):
         verbose_name_plural = 'Purchases Audit'
         db_table = 'purchase_audit_model'
 
-
-class PurchaseDetailAudit(models.Model):
-    invoice_no = models.CharField(max_length=35)
-    quantity = models.FloatField()
-    unit_price = models.FloatField()
-    amount = models.FloatField()
-    description = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.invoice_no
-
-    class Meta:
-        verbose_name = 'Purchase Detail Audit'
-        verbose_name_plural = 'Purchase Details Audit'
-        db_table = 'purchase_detail_audit_model'
+# class PurchaseDetailAudit(models.Model):
+#     invoice_no = models.CharField(max_length=35)
+#     quantity = models.FloatField()
+#     unit_price = models.FloatField()
+#     amount = models.FloatField()
+#     description = models.CharField(max_length=255)
+#
+#     def __str__(self):
+#         return self.invoice_no
+#
+#     class Meta:
+#         verbose_name = 'Purchase Detail Audit'
+#         verbose_name_plural = 'Purchase Details Audit'
+#         db_table = 'purchase_detail_audit_model'

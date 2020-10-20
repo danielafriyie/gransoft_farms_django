@@ -1,20 +1,10 @@
 <script>
     let addBtn = document.getElementsByClassName('dynamic-add-btn')[0];
     let deleteBtn = document.getElementsByClassName('dynamic-delete-btn');
-    let qty = document.getElementById(`id_purchasedetail_set-0-quantity`);
-    let u_p = document.getElementById(`id_purchasedetail_set-0-unit_price`);
-    let amt = document.getElementById(`id_purchasedetail_set-0-amount`);
 
     function setAmountValue(a, q, u) {
         a.value = q.value * u.value
     }
-
-    qty.addEventListener('input', function () {
-        setAmountValue(amt, qty, u_p)
-    });
-    u_p.addEventListener('input', function () {
-        setAmountValue(amt, qty, u_p)
-    });
 
     function setcalcAmountListener(id_num) {
         let qty = document.getElementById(`id_purchasedetail_set-${id_num}-quantity`);
@@ -29,20 +19,13 @@
         });
     }
 
-    let i = 1;
-    let d;
-
-    function decreaseI() {
-        i -= 1;
-    }
-
     function calcAmount() {
-        setcalcAmountListener(i);
+        let d;
         for (d = 0; d < deleteBtn.length; d++) {
-            deleteBtn[d].addEventListener('click', decreaseI);
+            setcalcAmountListener(d);
         }
-        i += 1;
     }
 
+    calcAmount();
     addBtn.addEventListener('click', calcAmount);
 </script>

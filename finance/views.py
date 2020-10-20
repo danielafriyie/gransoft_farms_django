@@ -6,8 +6,7 @@ from datetime import datetime as dt
 
 from mixins import PermissionRequiredMixin, DeleteModelObjectMixin, ModuleAccesRedirectMixin, ManageModuleViewMixin
 from .forms import (
-    CreatePurchaseForm, UpdatePurchaseForm, CreatePurchaseDetailFormSet, UpdatePurchaseDetailFormSet,
-    base_purchase_detail_formset
+    CreatePurchaseForm, UpdatePurchaseForm, CreatePurchaseDetailFormSet, UpdatePurchaseDetailFormSet
 )
 from .models import PurchaseModel, PurchaseDetail
 
@@ -65,13 +64,9 @@ class UpdatePurchase(PermissionRequiredMixin, View):
         purchase_detail_form = UpdatePurchaseDetailFormSet(data=request.POST, instance=purchase)
         if form.is_valid() and purchase_detail_form.is_valid():
             form.save(request.user, request.POST['p_id'], request.POST['inv_no'])
-            purchase_detail_form.save_existing_objects()
+            purchase_detail_form.save()
             msg.success(request, 'Purchase updated successfully!')
             return redirect('finance:manage_purchases')
-
-        for f in purchase_detail_form.forms:
-            print(f.errors)
-            print()
         msg.error(request, 'There\'s an error in your form!')
         return render(request, self.template, {
             'form': form,
@@ -83,10 +78,7 @@ class ManagePurchases(PermissionRequiredMixin, ManageModuleViewMixin, View):
     perm = 'finance.finance_pur_update'
     template = 'finance/purchases/manage_purchases.html'
     model = PurchaseModel
-    values_list_cols = (
-        'id', 'supplier_name', 'phone', 'address', 'invoice_no', 'date_created',
-        # 'purchasedetail__quantity', 'purchasedetail__unit_price', 'purchasedetail__amount'
-    )
+    values_list_cols = ('id', 'supplier_name', 'phone', 'address', 'invoice_no', 'date_created')
     order_col = '-date_created'
 
     def purchase_data(self, **filters):
@@ -129,5 +121,8 @@ class ManagePurchases(PermissionRequiredMixin, ManageModuleViewMixin, View):
 class DeletePurchase(PermissionRequiredMixin, DeleteModelObjectMixin, View):
     perm = 'finance.finance_pur_delete'
     model = PurchaseModel
-    success_url = 'finance:manage_purchases'
     values_list = 'invoice_no'
+
+    @property
+    def get_success_url(self):
+        return self.request.POST['path']

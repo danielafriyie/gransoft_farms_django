@@ -29,10 +29,10 @@
                                 <input type="hidden" hidden name="p_id" value="{{ form.instance.pk }}">
                             </div>
                         </div>
-                        <div class="col-12 dynamic-formset">
+                        <div class="col-12 dynamic-formset m-0 p-0">
                             {{ purchase_detail_form.management_form }}
-                            <div class="row">
-                                {% for form in purchase_detail_form %}
+                            {% for form in purchase_detail_form.forms %}
+                                <div class="row dynamic-form">
                                     <div class="form-group col-md-2">
                                         <label for=""></label>
                                         {{ form.quantity }}
@@ -49,6 +49,12 @@
                                         <label for=""></label>
                                         {{ form.description }}
                                     </div>
+                                    <div class="form-group col-md-1" hidden>
+                                        <label for=""></label>
+                                        <div class="btn btn-danger mt-4">
+                                            {{ form.DELETE }}
+                                        </div>
+                                    </div>
                                     <div class="form-group col-md-2" hidden>
                                         <label for=""></label>
                                         {{ form.invoice_no }}
@@ -57,8 +63,8 @@
                                         <label for=""></label>
                                         {{ form.id }}
                                     </div>
-                                {% endfor %}
-                            </div>
+                                </div>
+                            {% endfor %}
                         </div>
 
                         <div class="d-flex justify-content-center mt-3">
@@ -74,31 +80,5 @@
     </section>
 {% endblock content %}
 {% block javascript %}
-    <script>
-        let addBtn = document.getElementsByClassName('dynamic-add-btn')[0];
-
-        function setAmountValue(a, q, u) {
-            a.value = q.value * u.value
-        }
-
-        let i;
-
-        function setcalcAmountListener() {
-            for (i = 0; i < 20; i++) {
-                let qty = document.getElementById(`id_form-${i}-quantity`);
-                let u_p = document.getElementById(`id_form-${i}-unit_price`);
-                let amt = document.getElementById(`id_form-${i}-amount`);
-
-                qty.addEventListener('input', function () {
-                    setAmountValue(amt, qty, u_p)
-                });
-                u_p.addEventListener('input', function () {
-                    setAmountValue(amt, qty, u_p)
-                });
-            }
-        }
-
-        setcalcAmountListener();
-        addBtn.addEventListener('click', setcalcAmountListener);
-    </script>
+    {% include 'finance/purchases/extra_js.html' %}
 {% endblock javascript %}

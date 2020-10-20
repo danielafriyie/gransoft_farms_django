@@ -136,7 +136,7 @@
                                     {% if perms.user_accounts.delete_user %}
                                         <td class="m-0 p-0">
                                             <a href="#" data-toggle="modal" data-target="#confirm-modal"
-                                               class="text-decoration-none btn btn-default"
+                                               class="text-decoration-none btn btn-outline-danger ml-3"
                                                onclick="confirmModal('delete-user-{{ user.1 }}', 'Confirm Delete')">
                                                 <span><i class="fa fa-trash-alt"></i></span>
                                             </a>
@@ -150,7 +150,7 @@
                                     {% endif %}
                                     <td class="m-0 p-0">
                                         <a href="#" data-toggle="modal" data-target="#confirm-modal"
-                                           class="text-decoration-none btn btn-default"
+                                           class="text-decoration-none btn btn-outline-info ml-3"
                                            onclick="confirmModal('toggle-user-status-{{ user.1 }}', 'Confirm Status Change')">
                                             <span>
                                                 {% if user.9 %}
