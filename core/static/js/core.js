@@ -25,9 +25,7 @@ $(document).ready(function () {
 
     setActiveModule('/finance/purchases', 'finance-purchases-module', true);
 
-    // let medsModule = document.getElementById('medicine-module');
-    // let feedsModule = document.getElementById('feeds-module');
-    setActiveModule('meds-feeds/', 'med-feeds-module');
+    setActiveModule('birds/', 'birds-module');
 
     setActiveModule('/reports', 'reports-module');
 });

@@ -1,0 +1,85 @@
+{% extends 'birds/base_birds_template.html' %}
+{% block content %}
+    {% if perms.birds.birds_manage_pen_house %}
+        <section id="manage-penhouse">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 d-flex" id="filtering">
+                        <div class="m-1">
+                            <a href="" class="btn btn-success">
+                                Add New
+                            </a>
+                        </div>
+                        <div class="m-1">
+                            <form action="{% url 'birds:manage_penhouse' %}" method="get" class="m-0 p-0">
+                                <div class="input-group">
+                                    <input type="text" name="search" placeholder="search"
+                                           class="form-control ml-1" value="{{ values.search }}"
+                                           style="width: 20rem;">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-info" type="submit">
+                                            <i class="fa fa-search"></i>
+                                            Search
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div id="result_table">
+                            <table class="table table-sm table-bordered table-responsive-md sortable">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th scope="col" class="text-uppercase">Pen Number</th>
+                                    <th scope="col" class="text-uppercase">Pen Name</th>
+                                    <th scope="col" class="text-uppercase">Date Created</th>
+                                    <th scope="col" class="text-uppercase">Number of Birds</th>
+                                    <th class="text-uppercase" scope="col">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% if paginator_pages %}
+                                    {% for pen in paginator_pages %}
+                                        <tr>
+                                            <th class="m-0 p-0">
+                                                <form action=""
+                                                      method="get" enctype="multipart/form-data">
+                                                    <input type="hidden" name="pen_id" value="{{ pen.0 }}">
+                                                    <button type="submit" class="btn btn-default">
+                                                        <strong>{{ pen.1 }}</strong>
+                                                    </button>
+                                                </form>
+                                            </th>
+                                            <td>{{ pen.2 }}</td>
+                                            <td>{{ pen.3|date:'Y-M-d' }}</td>
+                                            <td>{{ pen.4 }}</td>
+                                            <td class="m-0 p-0">
+                                                <a href="#" data-toggle="modal" data-target="#confirm-modal"
+                                                   class="text-decoration-none btn btn-outline-danger ml-3"
+                                                   onclick="confirmModal('delete-pen-{{ pen.0 }}', 'Confirm Delete')">
+                                                    <span><i class="fa fa-trash-alt"></i></span>
+                                                </a>
+                                                <form action="{% url 'birds:delete_penhouse' pen.0 %}"
+                                                      method="post" enctype="multipart/form-data"
+                                                      style="display: none"
+                                                      id="delete-pen-{{ pen.0 }}">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="path"
+                                                           value="{{ request.get_full_path }}">
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% include 'partials/_pagination.html' %}
+                        {% include 'partials/_confirm_modal.html' %}
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+{% endblock content %}

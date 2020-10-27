@@ -3,6 +3,7 @@
 db.sqlite3
 .idea
 __pycache__
+migrations
 /migrations/
 event_log
 core/settings/prod_settings.py
@@ -19,5 +20,6 @@ purchases.xlsx
 bunny.html
 exports
 med_feeds/migrations
-static
+/static/
 media
+birds/migrations

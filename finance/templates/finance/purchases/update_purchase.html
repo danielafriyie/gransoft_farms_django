@@ -22,6 +22,10 @@
                                 <label for="">Address:</label>
                                 {{ form.address }}
                             </div>
+                            <div class="form-group col-md-6">
+                                <label for="total-purchases">Total:</label>
+                                <input id="total-purchases" type="text" class="form-control">
+                            </div>
                             <div class="form-group col-12" hidden>
                                 <input type="hidden" hidden name="inv_no" value="{{ form.instance.invoice_no }}">
                             </div>
@@ -66,7 +70,7 @@
                                 </div>
                             {% endfor %}
                         </div>
-
+                        <input type="hidden" hidden id="get-previous-path" name="prev-path">
                         <div class="d-flex justify-content-center mt-3">
                             <input style="width: 15rem;"
                                    type="submit" value="Save" name="save" class="btn btn-info mx-1 px-5">
@@ -81,4 +85,12 @@
 {% endblock content %}
 {% block javascript %}
     {% include 'finance/purchases/extra_js.html' %}
+    <script>
+        function getPreviousPath() {
+            let p = document.getElementById('get-previous-path');
+            p.value = document.referrer;
+        }
+
+        getPreviousPath();
+    </script>
 {% endblock javascript %}

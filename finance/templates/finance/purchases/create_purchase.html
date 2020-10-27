@@ -8,7 +8,6 @@
                 <div class="col pt-4">
                     <form action="{% url 'finance:create_purchase' %}" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        {#                        {{ form.media }}#}
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="">Supplier Name:</label>
@@ -30,6 +29,10 @@
                                         {{ form.invoice_no.errors }}
                                     </div>
                                 {% endif %}
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="total-purchases">Total:</label>
+                                <input id="total-purchases" type="text" class="form-control">
                             </div>
                             <div class="col-12 dynamic-formset">
                                 {{ purchase_detail_form.management_form }}

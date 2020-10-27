@@ -60,13 +60,13 @@ class UpdatePurchase(PermissionRequiredMixin, View):
 
     def post(self, request):
         purchase = get_object_or_404(PurchaseModel, invoice_no=request.POST['inv_no'], pk=request.POST['p_id'])
-        form = UpdatePurchaseForm(request.POST)
+        form, prev_path = UpdatePurchaseForm(request.POST), request.POST['prev-path']
         purchase_detail_form = UpdatePurchaseDetailFormSet(data=request.POST, instance=purchase)
         if form.is_valid() and purchase_detail_form.is_valid():
             form.save(request.user, request.POST['p_id'], request.POST['inv_no'])
             purchase_detail_form.save()
             msg.success(request, 'Purchase updated successfully!')
-            return redirect('finance:manage_purchases')
+            return redirect(prev_path) if prev_path else redirect('finance:manage_purchases')
         msg.error(request, 'There\'s an error in your form!')
         return render(request, self.template, {
             'form': form,

@@ -18,9 +18,7 @@ class PurchasesReport(PermissionRequiredMixin, ReportViewMixin, View):
     )
     query_cols = (
         'invoice_no__supplier_name', 'invoice_no__phone', 'invoice_no__address', 'invoice_no',
-        'invoice_no__date_created',
-        'quantity', 'unit_price', 'amount',
-        'description'
+        'invoice_no__date_created', 'quantity', 'unit_price', 'amount', 'description'
     )
     exclude_kwargs = {'invoice_no__is_default': False}
     model = PurchaseDetail

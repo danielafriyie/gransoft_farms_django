@@ -5,21 +5,21 @@ from django.shortcuts import get_object_or_404
 from .models import PurchaseModel, PurchaseDetail
 
 
-def base_purchase_detail_formset(extra=1, **kwargs):
+def base_formset(parent_model, child_model, extra=1, **kwargs):
     return inlineformset_factory(
-        PurchaseModel, PurchaseDetail,
+        parent_model, child_model,
         fields=('quantity', 'unit_price', 'amount', 'description'),
         widgets={
             'quantity': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'quantity'}),
             'unit_price': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'unit price'}),
-            'amount': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'amount'}),
+            'amount': forms.NumberInput(attrs={'class': 'form-control form-amount', 'placeholder': 'amount'}),
             'description': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'description'}),
         }, extra=extra, **kwargs
     )
 
 
-CreatePurchaseDetailFormSet = base_purchase_detail_formset()
-UpdatePurchaseDetailFormSet = base_purchase_detail_formset()
+CreatePurchaseDetailFormSet = base_formset(PurchaseModel, PurchaseDetail)
+UpdatePurchaseDetailFormSet = base_formset(PurchaseModel, PurchaseDetail)
 
 
 class BasePurchaseForm(forms.ModelForm):

@@ -22,7 +22,8 @@ MY_APPS = [
     'user_accounts.apps.UserAccountsConfig',
     'finance.apps.FinanceConfig',
     'reports.apps.ReportsConfig',
-    'med_feeds.apps.MedFeedsConfig'
+    'med_feeds.apps.MedFeedsConfig',
+    'birds.apps.BirdsConfig'
 ]
 
 INSTALLED_APPS = BUILTIN_APPS + THIRD_PARTY_APPS + MY_APPS

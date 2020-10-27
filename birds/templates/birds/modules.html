@@ -1,0 +1,30 @@
+{% if perms.birds %}
+    <li class="py-3">
+        <a href="{% url 'birds:manage_penhouse' %}"
+                {% if 'birds/penhouse/manage-penhouse' in request.path %}
+           class="active-sub-module"
+                {% endif %}>
+            <span style="width: 3rem;"><i class="fa fa-store fa-2x"></i> </span>
+            <span class="pt-2 pr-3">Pen House</span>
+        </a>
+    </li>
+    <li class="py-3">
+        <a href="">
+            <span style="width: 3rem;"><i class="fa fa-crow fa-2x"></i></span>
+            <span class="pt-2 pr-3">Stock</span>
+        </a>
+    </li>
+    <li class="py-3">
+        <a href="">
+            <span style="width: 3rem;"><i class="fa fa-feather fa-2x"></i></span>
+            <span class="pt-2 pr-3">Mortality / Culls</span>
+        </a>
+    </li>
+    <li class="py-3">
+        <a href="">
+            <span style="width: 3rem;"><i class="fa fa-syringe fa-2x"></i></span>
+            <span class="pt-2 pr-3">Medicine / Feed</span>
+        </a>
+    </li>
+
+{% endif %}
