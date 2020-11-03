@@ -6,80 +6,78 @@ from datetime import datetime as dt
 
 from mixins import PermissionRequiredMixin, DeleteModelObjectMixin, ModuleAccesRedirectMixin, ManageModuleViewMixin
 from .forms import (
-    CreatePurchaseForm, UpdatePurchaseForm, CreatePurchaseDetailFormSet, UpdatePurchaseDetailFormSet
+    CreateFinanceForm, UpdateFinanceForm, CreateFinanceItemDetailFormSet, UpdateFinanceItemDetailFormSet
 )
-from .models import PurchaseModel, PurchaseDetail
+from .models import FinanceModel, ItemDetail
 
 
 class MainModuleMixin(ModuleAccesRedirectMixin, View):
     perm_link = (
-        ('finance:create_purchase', 'finance.finance_pur_add_new'),
-        ('finance:manage_purchases', 'finance.finance_pur_update'),
+        ('finance:create', 'finance.finance_add_new'),
+        ('finance:manage', 'finance.finance_update'),
     )
 
 
-###############################################
-#       PURCHASES
-#############################################
-class CreatePurchase(PermissionRequiredMixin, View):
-    perm = 'finance.finance_pur_add_new'
+class CreateFinanceItemView(PermissionRequiredMixin, View):
+    perm = 'finance.finance_add_new'
 
     def get(self, request):
-        return render(request, 'finance/purchases/create_purchase.html', {
-            'form': CreatePurchaseForm(initial={'auth_user': self.request.user}),
-            'purchase_detail_form': CreatePurchaseDetailFormSet(queryset=PurchaseDetail.objects.none()),
+        return render(request, 'finance/sales_purchases/create.html', {
+            'form': CreateFinanceForm(initial={'auth_user': self.request.user}),
+            'item_detail_form_set': CreateFinanceItemDetailFormSet(queryset=ItemDetail.objects.none()),
         })
 
     def post(self, request):
-        form = CreatePurchaseForm(request.POST)
-        purchase_detail_form = CreatePurchaseDetailFormSet(data=request.POST)
-        if form.is_valid() and purchase_detail_form.is_valid():
-            purchase_detail_form.instance = form.save()
-            purchase_detail_form.save()
-            msg.success(request, 'Purchase created successfully!')
-            return redirect('finance:create_purchase')
+        form = CreateFinanceForm(request.POST)
+        item_detail_form_set = CreateFinanceItemDetailFormSet(data=request.POST)
+        if form.is_valid() and item_detail_form_set.is_valid():
+            item_detail_form_set.instance = form.save()
+            item_detail_form_set.save()
+            msg.success(request, 'Created successfully!')
+            return redirect('finance:create')
         msg.error(request, 'There\'s an error in your form!')
-        return render(request, 'finance/purchases/create_purchase.html', {
+        return render(request, 'finance/sales_purchases/create.html', {
             'form': form,
-            'purchase_detail_form': purchase_detail_form
+            'item_detail_form_set': item_detail_form_set
         })
 
 
-class UpdatePurchase(PermissionRequiredMixin, View):
-    perms = 'finance.finance_pur_update'
-    template = 'finance/purchases/update_purchase.html'
+class UpdateFinanceItemView(PermissionRequiredMixin, View):
+    perm = 'finance.finance_update'
+    template = 'finance/sales_purchases/update.html'
 
     def get(self, request):
-        purchase = get_object_or_404(PurchaseModel, invoice_no=request.GET['inv_no'])
-        form = UpdatePurchaseForm(instance=purchase)
-        purchase_detail_form = UpdatePurchaseDetailFormSet(instance=purchase)
-        return render(request, 'finance/purchases/update_purchase.html', {
+        finance_item = get_object_or_404(FinanceModel, invoice_no=request.GET['inv_no'])
+        form = UpdateFinanceForm(instance=finance_item)
+        item_detail_form_set = UpdateFinanceItemDetailFormSet(instance=finance_item)
+        return render(request, self.template, {
             'form': form,
-            'purchase_detail_form': purchase_detail_form,
+            'item_detail_form_set': item_detail_form_set,
         })
 
     def post(self, request):
-        purchase = get_object_or_404(PurchaseModel, invoice_no=request.POST['inv_no'], pk=request.POST['p_id'])
-        form, prev_path = UpdatePurchaseForm(request.POST), request.POST['prev-path']
-        purchase_detail_form = UpdatePurchaseDetailFormSet(data=request.POST, instance=purchase)
-        if form.is_valid() and purchase_detail_form.is_valid():
+        finance_item = get_object_or_404(FinanceModel, invoice_no=request.POST['inv_no'], pk=request.POST['p_id'])
+        form, prev_path = UpdateFinanceForm(request.POST), request.POST['prev-path']
+        item_detail_form_set = UpdateFinanceItemDetailFormSet(data=request.POST, instance=finance_item)
+        if form.is_valid() and item_detail_form_set.is_valid():
             form.save(request.user, request.POST['p_id'], request.POST['inv_no'])
-            purchase_detail_form.save()
-            msg.success(request, 'Purchase updated successfully!')
+            item_detail_form_set.save()
+            msg.success(request, 'Updated successfully!')
             return redirect(prev_path) if prev_path else redirect('finance:manage_purchases')
         msg.error(request, 'There\'s an error in your form!')
         return render(request, self.template, {
             'form': form,
-            'purchase_detail_form': purchase_detail_form,
+            'item_detail_form_set': item_detail_form_set,
         })
 
 
-class ManagePurchases(PermissionRequiredMixin, ManageModuleViewMixin, View):
-    perm = 'finance.finance_pur_update'
-    template = 'finance/purchases/manage_purchases.html'
-    model = PurchaseModel
-    values_list_cols = ('id', 'supplier_name', 'phone', 'address', 'invoice_no', 'date_created')
+class ManageFinanceItemView(PermissionRequiredMixin, ManageModuleViewMixin, View):
+    perm = 'finance.finance_update'
+    template = 'finance/sales_purchases/manage.html'
+    model = FinanceModel
+    values_list_cols = ('id', 'supplier_name', 'phone', 'address', 'invoice_no', 'category', 'date_created')
     order_col = '-date_created'
+    url_filter_kwargs = (('category', 'category'),)
 
     def purchase_data(self, **filters):
         return super().query_set.filter(**filters, is_default=False)
@@ -118,9 +116,9 @@ class ManagePurchases(PermissionRequiredMixin, ManageModuleViewMixin, View):
         return super().get_context
 
 
-class DeletePurchase(PermissionRequiredMixin, DeleteModelObjectMixin, View):
-    perm = 'finance.finance_pur_delete'
-    model = PurchaseModel
+class DeleteFinanceItemView(PermissionRequiredMixin, DeleteModelObjectMixin, View):
+    perm = 'finance.finance_delete'
+    model = FinanceModel
     values_list = 'invoice_no'
 
     @property

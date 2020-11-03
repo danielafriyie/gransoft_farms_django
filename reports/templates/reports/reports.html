@@ -6,21 +6,21 @@
     <section id="reports" class="mt-1">
         <div class="container-fluid">
             <div class="row">
-                {% if perms.finance.finance_pur_report %}
+                {% if perms.finance.finance_report %}
                     <div class="mb-2 col-lg-3 col-md-4 col-sm-12">
-                        <a href="{% url 'reports:purchase_report' %}"
+                        <a href="{% url 'reports:sales_purchases' %}"
                            class="btn btn-secondary px-5 h-100 w-100">
                             <span><i class="fa fa-shopping-cart fa-5x"></i></span><br>
-                            <span class="mx-2">Purchases</span>
+                            <span class="mx-2">Sales / Purchases</span>
                         </a>
                     </div>
                 {% endif %}
-                {% if perms.finance.finance_pur_audit_trail %}
+                {% if perms.finance.finance_audit_trail %}
                     <div class="mb-2 col-lg-3 col-md-4 col-sm-12">
-                        <a href="{% url 'reports:purchase_audit_report' %}"
+                        <a href="{% url 'reports:finance_audit_report' %}"
                            class="btn btn-secondary px-5 h-100 w-100">
                             <span><i class="fa fa-cart-plus fa-5x"></i></span><br>
-                            <span class="mx-2">Purchases Audit</span>
+                            <span class="mx-2">Sales / Purchases Audit</span>
                         </a>
                     </div>
                 {% endif %}

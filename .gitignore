@@ -11,7 +11,7 @@ core/settings/prod_settings.py
 user_accounts/migrations
 home/migrations
 bunny.py
-purchases/migrations
+finance/templates/finance/sales_purchases/migrations
 finance/migrations
 server_config.cnf
 reports/migrations

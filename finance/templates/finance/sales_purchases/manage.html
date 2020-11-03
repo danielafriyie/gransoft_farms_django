@@ -1,0 +1,118 @@
+{% extends 'finance/base_finance_template.html' %}
+{% block breadcrumb %}  Finance &raquo; Manage {% endblock breadcrumb %}
+{% load humanize %}
+
+{% block content %}
+    <section id="manage-purchases">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 d-flex" id="filtering">
+                    {% if perms.finance.finance_add_new %}
+                        <div class="m-1">
+                            <a href="{% url 'finance:create' %}" class="btn btn-success">
+                                Add New
+                            </a>
+                        </div>
+                    {% endif %}
+                    {% if perms.finance.finance_update %}
+                        <div class="m-1">
+                            <form action="{% url 'finance:manage' %}" method="get" class="m-0 p-0">
+                                <div class="input-group">
+                                    <input type="date" name="date1" class="form-control"
+                                           value="{{ values.date1 }}">
+                                    <input type="date" name="date2" class="form-control"
+                                           value="{{ values.date2 }}">
+                                    <select name="category" id="category" class="form-control">
+                                        <option value=""></option>
+                                        <option value="Sale" {% if values.category == 'Sale' %} selected {% endif %}>
+                                            Sales
+                                        </option>
+                                        <option value="Purchase" {% if values.category == 'Purchase' %}
+                                                selected {% endif %}>Purchases
+                                        </option>
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-info" type="submit" name="filter">
+                                            <i class="fa fa-calendar-alt"></i>
+                                            Filter
+                                        </button>
+                                    </div>
+
+                                    <input type="text" name="search" placeholder="search"
+                                           class="form-control ml-1" value="{{ values.search }}"
+                                           style="width: 20rem;">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-info" type="submit">
+                                            <i class="fa fa-search"></i>
+                                            Search
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        </div>
+                        <div class="col-12">
+                            <div id="result_table">
+                                <table class="table table-sm table-bordered table-responsive-md sortable">
+                                    <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col" class="text-uppercase">Supplier name</th>
+                                        <th scope="col" class="text-uppercase">Phone</th>
+                                        <th scope="col" class="text-uppercase">Address</th>
+                                        <th scope="col" class="text-uppercase">Invoice No.</th>
+                                        <th scope="col" class="text-uppercase">Category</th>
+                                        <th scope="col" class="text-uppercase"> Date</th>
+                                        {% if perms.finance.finance_delete %}
+                                            <th class="table-head text-uppercase" scope="col">Action</th>
+                                        {% endif %}
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% if paginator_pages %}
+                                        {% for purchase in paginator_pages %}
+                                            <tr>
+                                                <th class="m-0 p-0">
+                                                    <form action="{% url 'finance:update' %}"
+                                                          method="get" enctype="multipart/form-data">
+                                                        <input type="hidden" name="inv_no" value="{{ purchase.4 }}">
+                                                        <button type="submit" class="btn btn-default">
+                                                            <strong>{{ purchase.1 }}</strong>
+                                                        </button>
+                                                    </form>
+                                                </th>
+                                                <td>{{ purchase.2 }}</td>
+                                                <td>{{ purchase.3 }}</td>
+                                                <td>{{ purchase.4 }}</td>
+                                                <td>{{ purchase.5 }}</td>
+                                                <td>{{ purchase.6|date:'Y-M-d' }}</td>
+                                                {% if perms.finance.finance_delete %}
+                                                    <td class="m-0 p-0">
+                                                        <a href="#" data-toggle="modal" data-target="#confirm-modal"
+                                                           class="text-decoration-none btn btn-outline-danger ml-3"
+                                                           onclick="confirmModal('delete-purchase-{{ purchase.0 }}', 'Confirm Delete')">
+                                                            <span><i class="fa fa-trash-alt"></i></span>
+                                                        </a>
+                                                        <form action="{% url 'finance:delete' purchase.0 %}"
+                                                              method="post" enctype="multipart/form-data"
+                                                              style="display: none"
+                                                              id="delete-purchase-{{ purchase.0 }}">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="path"
+                                                                   value="{{ request.get_full_path }}">
+                                                        </form>
+                                                    </td>
+                                                {% endif %}
+                                            </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% include 'partials/_pagination.html' %}
+                            {% include 'partials/_confirm_modal.html' %}
+                        </div>
+                    {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock content %}

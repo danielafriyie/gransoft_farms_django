@@ -35,7 +35,7 @@ class BaseModel(models.Model):
 
 
 class BirdsStock(BaseModel):
-    invoice_no = models.ForeignKey('finance.PurchaseModel', on_delete=models.RESTRICT)
+    invoice_no = models.ForeignKey('finance.FinanceModel', on_delete=models.RESTRICT)
     quantity = models.IntegerField()
 
     def __str__(self):

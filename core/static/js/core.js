@@ -8,7 +8,7 @@ let requestPath = window.location.pathname;
 
 function setActiveModule(path, elm_id, showSubMenu = false) {
     let elm = document.getElementById(elm_id);
-    if (requestPath.includes(path)) {
+    if (requestPath.split('/')[1] === path) {
         elm.classList.add('active-module');
 
         if (showSubMenu) {
@@ -18,16 +18,16 @@ function setActiveModule(path, elm_id, showSubMenu = false) {
 }
 
 $(document).ready(function () {
-    setActiveModule('/user-accounts', 'user-accounts', true);
-    setActiveModule('/user-accounts', 'user-accounts-nav');
+    // setActiveModule('user-accounts', 'user-accounts');
+    setActiveModule('user-accounts', 'user-accounts-nav');
 
-    setActiveModule('/finance', 'finance-module');
+    setActiveModule('finance', 'finance-module');
 
-    setActiveModule('/finance/purchases', 'finance-purchases-module', true);
+    // setActiveModule('/finance/purchases', 'finance-purchases-module', true);
 
-    setActiveModule('birds/', 'birds-module');
+    setActiveModule('birds', 'birds-module');
 
-    setActiveModule('/reports', 'reports-module');
+    setActiveModule('reports', 'reports-module');
 });
 
 if (window.matchMedia('(min-width: 1450px)').matches) {

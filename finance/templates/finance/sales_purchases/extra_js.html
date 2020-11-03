@@ -1,0 +1,57 @@
+<script>
+    let addBtn = document.getElementsByClassName('dynamic-add-btn')[0];
+    let deleteBtn = document.getElementsByClassName('dynamic-delete-btn');
+
+    function thousands_separators(num) {
+        let num_parts = num.toString().split(".");
+        num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return num_parts.join(".");
+    }
+
+    function setAmountValue(a, q, u) {
+        a.value = q.value * u.value
+    }
+
+    let total = document.getElementById('total-purchases');
+    let amount = document.getElementsByClassName('form-amount');
+
+    function calcTotalAmount() {
+        let i;
+        let tAmt = 0;
+        for (i = 0; i <= amount.length; i++) {
+            try {
+                tAmt += Number(amount[i].value);
+                total.value = thousands_separators(tAmt);
+            } catch (e) {
+            }
+        }
+    }
+
+    calcTotalAmount();
+
+    function setcalcAmountListener(id_num) {
+        let qty = document.getElementById(`id_itemdetail_set-${id_num}-quantity`);
+        let u_p = document.getElementById(`id_itemdetail_set-${id_num}-unit_price`);
+        let amt = document.getElementById(`id_itemdetail_set-${id_num}-amount`);
+
+        qty.addEventListener('input', function () {
+            setAmountValue(amt, qty, u_p)
+        });
+        u_p.addEventListener('input', function () {
+            setAmountValue(amt, qty, u_p)
+        });
+        amt.addEventListener('input', calcTotalAmount);
+        qty.addEventListener('input', calcTotalAmount);
+        u_p.addEventListener('input', calcTotalAmount);
+    }
+
+    function calcAmount() {
+        let d;
+        for (d = 0; d < deleteBtn.length; d++) {
+            setcalcAmountListener(d);
+        }
+    }
+
+    calcAmount();
+    addBtn.addEventListener('click', calcAmount);
+</script>

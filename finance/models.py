@@ -5,11 +5,13 @@ from django.urls import reverse
 User = settings.AUTH_USER_MODEL
 
 
-class BasePurchasesModel(models.Model):
+class BaseModel(models.Model):
+    category_choices = (('Sale', 'Sale'), ('Purchase', 'Purchase'))
     supplier_name = models.CharField(max_length=60)
     phone = models.CharField(max_length=15)
     address = models.CharField(max_length=35)
     is_default = models.BooleanField(default=False)
+    category = models.CharField(max_length=10, choices=category_choices)
     date_created = models.DateField(auto_now_add=True)
 
     class Meta:
@@ -17,45 +19,45 @@ class BasePurchasesModel(models.Model):
         ordering = ['-date_created']
 
     def __str__(self):
-        return self.invoice_no
+        return f'{self.supplier_name} - {self.invoice_no}'
 
 
-class PurchaseModel(BasePurchasesModel):
+class FinanceModel(BaseModel):
     invoice_no = models.CharField(max_length=35, unique=True)
     auth_user = models.ForeignKey(User, on_delete=models.RESTRICT)
 
     class Meta:
         permissions = (
-            ('finance_pur_add_new', 'Can create purchase custom'),
-            ('finance_pur_update', 'Can update purchase custom'),
-            ('finance_pur_delete', 'Can delete purchase custom'),
-            ('finance_pur_report', 'Can view purchase report custom'),
-            ('finance_pur_audit_trail', 'Can view purchase audit trail custom')
+            ('finance_add_new', 'Can create custom'),
+            ('finance_update', 'Can update custom'),
+            ('finance_delete', 'Can delete custom'),
+            ('finance_report', 'Can view report custom'),
+            ('finance_audit_trail', 'Can view audit trail custom')
         )
-        verbose_name = 'Purchase'
-        verbose_name_plural = 'Purchases'
-        db_table = 'purchase_model'
+        verbose_name = 'Sale / Purchase'
+        verbose_name_plural = 'Sales / Purchases'
+        db_table = 'finance_model'
 
     def get_absolute_url(self):
-        return reverse('finance:update_purchase', args=[str(self.id)])
+        return reverse('finance:update', args=[str(self.id)])
 
 
-class PurchaseDetail(models.Model):
-    invoice_no = models.ForeignKey(PurchaseModel, on_delete=models.CASCADE, to_field='invoice_no')
+class ItemDetail(models.Model):
+    invoice_no = models.ForeignKey(FinanceModel, on_delete=models.CASCADE, to_field='invoice_no')
     quantity = models.FloatField()
     unit_price = models.FloatField()
     amount = models.FloatField()
     description = models.CharField(max_length=255)
 
     class Meta:
-        verbose_name = 'Purchase Detail'
-        verbose_name_plural = 'Purchase Details'
-        db_table = 'purchase_detail_model'
+        verbose_name = 'Item Detail'
+        verbose_name_plural = 'Item Details'
+        db_table = 'item_detail_model'
 
 
-class PurchaseModelAudit(BasePurchasesModel):
+class FinanceModelAudit(BaseModel):
     invoice_no = models.CharField(max_length=35)
-    purchase_id = models.IntegerField()
+    item_id = models.IntegerField()
     quantity = models.FloatField(null=True, blank=True)
     unit_price = models.FloatField(null=True, blank=True)
     amount = models.FloatField(null=True, blank=True)
@@ -64,21 +66,9 @@ class PurchaseModelAudit(BasePurchasesModel):
     action_flag = models.CharField(max_length=20)
 
     class Meta:
-        verbose_name = 'Purchase Audit'
-        verbose_name_plural = 'Purchases Audit'
-        db_table = 'purchase_audit_model'
+        verbose_name = 'Finance Model Audit'
+        verbose_name_plural = 'Finance Model Audit'
+        db_table = 'finance_model_audit'
 
-# class PurchaseDetailAudit(models.Model):
-#     invoice_no = models.CharField(max_length=35)
-#     quantity = models.FloatField()
-#     unit_price = models.FloatField()
-#     amount = models.FloatField()
-#     description = models.CharField(max_length=255)
-#
-#     def __str__(self):
-#         return self.invoice_no
-#
-#     class Meta:
-#         verbose_name = 'Purchase Detail Audit'
-#         verbose_name_plural = 'Purchase Details Audit'
-#         db_table = 'purchase_detail_audit_model'
+
+

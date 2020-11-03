@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>
-        {{ user.username }} -
+        {{ user.username }} |
         {% if company %}
             {{ company.name }}
         {% endif %}
@@ -65,7 +65,7 @@
 
                                 {% block modules %} {% endblock modules %}
 
-                                <li class="py-3">
+                                <!--<li class="py-3">
                                     <a href="javascript:{document.getElementById('logout').submit()}">
                                         <span style="width: 3rem;"><i class="fa fa-sign-out-alt fa-2x"></i></span>
                                         <span class="pr-3 pt-2">Logout</span>
@@ -75,7 +75,7 @@
                                         {% csrf_token %}
                                         <input type="hidden">
                                     </form>
-                                </li>
+                                </li> -->
                             </ul>
                         </div>
                     </div>
@@ -115,7 +115,7 @@
 <script rel="script" src="{% static 'dynamic_formsets/jquery.formset.js' %}"></script>
 <script type="text/javascript">
     $('.dynamic-formset').formset({
-        prefix: 'purchasedetail_set',
+        prefix: 'itemdetail_set',
         addCssClass: 'btn btn-success ml-3 my-1 dynamic-add-btn',
         deleteCssClass: 'btn btn-danger mt-4 h-100 dynamic-delete-btn',
         uiText: {

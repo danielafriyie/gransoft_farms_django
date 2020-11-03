@@ -17,12 +17,13 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
                 {% if perms.user_accounts %}
-                    <a href="{% url 'user_accounts:main_module' %}" class="nav-item nav-link" id="user-accounts-nav">
+                    <a href="{% url 'user_accounts:main_module' %}" class="nav-link" id="user-accounts-nav">
                         User Accounts
                     </a>
                 {% endif %}
                 {% if perms.finance %}
-                    <a href="{% url 'finance:main_module' %}" class="nav-item nav-link" id="finance-module">Finance</a>
+                    <a href="{% url 'finance:main_module' %}" class="nav-link" id="finance-module">Sales /
+                        Purchases</a>
                 {% endif %}
                 <!--{% if perms.med_feeds %}
                     <a href="" class="nav-item nav-link" id="med-feeds-module">
@@ -30,12 +31,20 @@
                     </a>
                 {% endif %} -->
                 {% if perms.birds %}
-                    <a href="{% url 'birds:main_module' %}" class="nav-item nav-link" id="birds-module">Birds</a>
+                    <a href="{% url 'birds:main_module' %}" class="nav-link" id="birds-module">Birds</a>
                 {% endif %}
                 <a href="" class="nav-item nav-link">Eggs</a>
-                <a href="{% url 'reports:reports_home' %}" class="nav-item nav-link" id="reports-module">
+                <a href="{% url 'reports:reports_home' %}" class="nav-link" id="reports-module">
                     Reports
                 </a>
+                <a href="javascript:{document.getElementById('logout').submit()}" class="nav-link">
+                    Logout
+                </a>
+                <form action="{% url 'home:logout' %}" method="POST" id="logout"
+                      style="display: none">
+                    {% csrf_token %}
+                    <input type="hidden">
+                </form>
             </div>
         </div>
     </nav>

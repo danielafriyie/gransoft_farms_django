@@ -20,16 +20,16 @@ class BaseRoleForm(forms.Form):
         'class': 'form-check-input'}), required=False)
 
     # finance permissions
-    finance_pur_add_new = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+    finance_add_new = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+                                         required=False)
+    finance_update = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+                                        required=False)
+    finance_delete = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+                                        required=False)
+    finance_audit_trail = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
                                              required=False)
-    finance_pur_update = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-                                            required=False)
-    finance_pur_delete = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-                                            required=False)
-    finance_pur_audit_trail = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-                                                 required=False)
-    finance_pur_report = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-                                            required=False)
+    finance_report = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+                                        required=False)
 
     @property
     def get_form_data(self):
@@ -42,11 +42,11 @@ class BaseRoleForm(forms.Form):
                 'set_password': self.cleaned_data['set_password'],
                 'manage_roles': self.cleaned_data['manage_roles'],
                 'view_user_account_audit_trail': self.cleaned_data['view_user_account_audit_trail'],
-                'finance_pur_add_new': self.cleaned_data['finance_pur_add_new'],
-                'finance_pur_update': self.cleaned_data['finance_pur_update'],
-                'finance_pur_delete': self.cleaned_data['finance_pur_delete'],
-                'finance_pur_audit_trail': self.cleaned_data['finance_pur_audit_trail'],
-                'finance_pur_report': self.cleaned_data['finance_pur_report']
+                'finance_add_new': self.cleaned_data['finance_pur_add_new'],
+                'finance_update': self.cleaned_data['finance_pur_update'],
+                'finance_delete': self.cleaned_data['finance_pur_delete'],
+                'finance_audit_trail': self.cleaned_data['finance_pur_audit_trail'],
+                'finance_report': self.cleaned_data['finance_pur_report']
             }
         return self.form_data
 

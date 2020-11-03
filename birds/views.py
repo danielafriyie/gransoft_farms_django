@@ -40,7 +40,7 @@ class ManagePenhouseView(PermissionRequiredMixin, ManageModuleViewMixin, View):
                     birds_stock_model b ON p.pen_number = b.pen_house_id
                 WHERE pen_name LIKE '%{}%'
                 GROUP BY b.pen_house_id;
-            """.format(pen_name)
+            """.format('%s', (pen_name,))
         with connection.cursor() as cur:
             cur.execute(sql)
             return cur.fetchall()

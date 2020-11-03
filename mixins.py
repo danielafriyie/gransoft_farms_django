@@ -250,17 +250,18 @@ class ReportViewMixin(ExcludeUrlKwargsMixin):
     """
     View for creating report with a return rendered by template attribute.
     """
-    template = None
-    excel_cols = None
-    query_cols = None
+    template = None  # template to render
+    excel_cols = None  # column names for the excel file
+    query_cols = None  # columns to select from
     request_kwarg = 'export'
     model = None
-    exclude_kwargs = None
+    exclude_kwargs = None  # columns or rows to exclude from the queryset
     order_col = None
     export_filename = None
     date1_request_kwarg = 'date1'
     date2_request_kwarg = 'date2'
     filter_date_field = 'date_created'
+    url_filter_kwargs = None
 
     def get(self, request):
         if self.request_kwarg in request.GET:
@@ -274,12 +275,19 @@ class ReportViewMixin(ExcludeUrlKwargsMixin):
 
     @property
     def query_set(self):
+        filter_dict = {}
         if (self.date1_request_kwarg and self.date2_request_kwarg) in self.request.GET:
-            filter_dict = {
+            filter_dict.update({
                 f"{self.filter_date_field}__gte": self.request.GET[self.date1_request_kwarg],
                 f'{self.filter_date_field}__lte': self.request.GET[self.date2_request_kwarg]
-            }
-            return self.query_set_data(**filter_dict)
+            })
+
+        if self.url_filter_kwargs:
+            for kwarg, field in self.url_filter_kwargs:
+                if kwarg in self.request.GET and self.request.GET[kwarg]:
+                    filter_dict.update({field: self.request.GET[kwarg]})
+
+        return self.query_set_data(**filter_dict)
 
     @property
     def context(self):
@@ -299,12 +307,12 @@ class ReportViewMixin(ExcludeUrlKwargsMixin):
 
 
 class ManageModuleViewMixin(ExcludeUrlKwargsMixin):
-    template = None
-    model = None
-    values_list_cols = None
-    order_col = None
-    url_filter_kwargs = None
-    extra_context = None
+    template = None  # template to render
+    model = None  # model to use
+    values_list_cols = None  # list columns to select from
+    order_col = None  # column to use to order the queryset
+    url_filter_kwargs = None  # extra filtering kwarg and field in the database
+    extra_context = None  # additional context to pass to the template
 
     def get(self, request):
         return render(request, self.template, self.get_context)
@@ -363,9 +371,9 @@ class ModuleAccesRedirectMixin:
         user = self.request.user
         for link, perm in self.perm_link:
             if user.has_perm(perm):
-                return link
+                return redirect(link)
         msg.warning(self.request, self.permission_denied_message)
         return redirect('home:homepage')
 
     def get(self, request):
-        return redirect(self._get_latest_sub_module_link)
+        return self._get_latest_sub_module_link

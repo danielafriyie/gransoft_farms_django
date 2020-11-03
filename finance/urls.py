@@ -1,21 +1,14 @@
-from django.urls import path, include
+from django.urls import path
 from .views import (
-    CreatePurchase, ManagePurchases, DeletePurchase, UpdatePurchase, MainModuleMixin
+    CreateFinanceItemView, ManageFinanceItemView, DeleteFinanceItemView, UpdateFinanceItemView, MainModuleMixin
 )
 
 app_name = 'finance'
 
-main_link = [
-    path('', MainModuleMixin.as_view(), name='main_module')
+urlpatterns = [
+    path('', MainModuleMixin.as_view(), name='main_module'),
+    path('create/', CreateFinanceItemView.as_view(), name='create'),
+    path('update/', UpdateFinanceItemView.as_view(), name='update'),
+    path('delete/<int:pk>/', DeleteFinanceItemView.as_view(), name='delete'),
+    path('manage/', ManageFinanceItemView.as_view(), name='manage')
 ]
-
-purchase_urls = [
-    path('purchases/', include([
-        path('create-purchase/', CreatePurchase.as_view(), name='create_purchase'),
-        path('update-purchase/', UpdatePurchase.as_view(), name='update_purchase'),
-        path('delete-purchase/<int:pk>/', DeletePurchase.as_view(), name='delete_purchase'),
-        path('manage-purchases/', ManagePurchases.as_view(), name='manage_purchases'),
-    ]))
-]
-
-urlpatterns = main_link + purchase_urls

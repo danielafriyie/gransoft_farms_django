@@ -1,64 +1,24 @@
 {% if perms.finance %}
-    {% if purchases_menu %}
+    {% if perms.finance.finance_add_new %}
         <li class="py-3">
-            <a onclick="dropDownMenu(this)" id="finance-purchases-module">
-                <span style="width: 3rem;"><i class="fa fa-shopping-cart fa-2x"></i></span>
-                <span class="pr-3 pt-2">Purchases</span>
+            <a href="{% url 'finance:create' %}"
+                    {% if '/finance/create/' in request.path %}
+               class="active-sub-module"
+                    {% endif %}>
+                <span style="width: 3rem;"><i class="fa fa-plus-circle fa-2x"></i> </span>
+                <span class="">Create</span>
             </a>
-            <div class="sub-menu pl-4 pt-2 pb-0">
-                <ul>
-                    {% if perms.finance.finance_pur_add_new %}
-                        <li>
-                            <a href="{% url 'finance:create_purchase' %}"
-                                    {% if '/finance/purchases/create-purchase' in request.path %}
-                               class="active-sub-module"
-                                    {% endif %}>
-                                <span style="width: 1rem;"><i class="fa fa-cart-plus"></i> </span>
-                                <span class="pl-3">New Purchase</span>
-                            </a>
-                        </li>
-                    {% endif %}
-                    {% if perms.finance.finance_pur_update %}
-                        <li>
-                            <a href="{% url 'finance:manage_purchases' %}"
-                                    {% if '/finance/purchases/manage-purchases/' in request.path %}
-                               class="active-sub-module"
-                                    {% endif %}>
-                                <span style="width: 1rem;"><i class="fa fa-luggage-cart"></i></span>
-                                <span class="pl-3">Manage Purchases</span>
-                            </a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
         </li>
     {% endif %}
-
-    {% if sales_menu %}
+    {% if perms.finance.finance_update %}
         <li class="py-3">
-            <a onclick="dropDownMenu(this)" id="finance-sales-module">
-                <span style="width: 3rem;"><i class="fa fa-chart-line fa-2x"></i></span>
-                <span class="pr-3 pt-2">Sales</span>
+            <a href="{% url 'finance:manage' %}"
+                    {% if '/finance/manage/' in request.path %}
+               class="active-sub-module"
+                    {% endif %}>
+                <span style="width: 3rem;"><i class="fa fa-luggage-cart fa-2x"></i></span>
+                <span class="">Manage</span>
             </a>
-            <div class="sub-menu pl-4 pt-2 pb-0">
-                <ul>
-                    <li>
-                        <a href=""
-                                {% if '/finance/sales/' in request.path %}
-                           class="active-sub-module"
-                                {% endif %}>
-                            <span style="width: 1rem;"><i class="fa fa-dollar-sign"></i> </span>
-                            <span class="pl-3">New Sale</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <span style="width: 1rem;"><i class="fa fa-chart-area"></i></span>
-                            <span class="pl-3">Manage Sales</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </li>
     {% endif %}
 {% endif %}
