@@ -1,4 +1,5 @@
 {% extends 'birds/base_birds_template.html' %}
+{% load humanize %}
 {% block content %}
     {% if perms.birds.birds_manage_pen_house %}
         <section id="manage-penhouse">
@@ -6,7 +7,7 @@
                 <div class="row">
                     <div class="col-12 d-flex" id="filtering">
                         <div class="m-1">
-                            <a href="" class="btn btn-success">
+                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#penhouse-modal">
                                 Add New
                             </a>
                         </div>
@@ -53,7 +54,7 @@
                                             </th>
                                             <td>{{ pen.2 }}</td>
                                             <td>{{ pen.3|date:'Y-M-d' }}</td>
-                                            <td>{{ pen.4 }}</td>
+                                            <td>{{ pen.4|intcomma }}</td>
                                             <td class="m-0 p-0">
                                                 <a href="#" data-toggle="modal" data-target="#confirm-modal"
                                                    class="text-decoration-none btn btn-outline-danger ml-3"
@@ -77,6 +78,47 @@
                         </div>
                         {% include 'partials/_pagination.html' %}
                         {% include 'partials/_confirm_modal.html' %}
+                        <div class="modal fade" id="penhouse-modal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    {#                    modal header #}
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="confirm-modal-title">Penhouse Form</h5>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    {#                    end of modal header#}
+
+                                    {#                    modal body #}
+                                    <div class="modal-body">
+                                        <form action="{% url 'birds:create_penhouse' %}" method="post">
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                <label for="">Pen Number:</label>
+                                                {{ form.pen_number }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="">Pen Name:</label>
+                                                {{ form.pen_name }}
+                                            </div>
+                                            <div class="form-group" hidden>
+                                                <label for="">Pen Name:</label>
+                                                {{ form.auth_user }}
+                                            </div>
+                                            <input type="hidden" name="path" value="{{ request.get_full_path }}">
+                                            <div class="d-flex">
+                                                <button type="submit" class="btn btn-danger w-50 p-1 mr-1">
+                                                    Save
+                                                </button>
+                                                <button type="reset" class="btn btn-secondary w-50 p-1 ml-1"
+                                                        data-dismiss="modal">Cancel
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    {#                    end of modal body #}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

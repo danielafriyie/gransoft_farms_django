@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.views.generic import View, CreateView
+from django.views.generic import View
 from django.db.models import RestrictedError
 from django.db import connection
 from django.contrib import messages as msg
@@ -9,6 +9,7 @@ from mixins import (
     DeleteModelObjectMixin
 )
 from .models import PenHouse
+from .forms import PenHouseForm
 
 
 class MainModule(ModuleAccesRedirectMixin, View):
@@ -18,6 +19,19 @@ class MainModule(ModuleAccesRedirectMixin, View):
         ('birds:manage_penhouse', 'birds.birds_manage_medicine_feed',),
         ('birds:manage_penhouse', 'birds.birds_can_manage_mortality_cull',)
     )
+
+
+class CreatePenhouseView(PermissionRequiredMixin, View):
+    perm = 'birds.birds_manage_pen_house'
+
+    def post(self, request):
+        form, path = PenHouseForm(request.POST), request.POST['path']
+        if form.is_valid():
+            form.save()
+            msg.success(request, 'Pen saved successfully!')
+        else:
+            msg.error(request, "There's an error in your form!")
+        return redirect(path if path else 'birds:manage_penhouse')
 
 
 class ManagePenhouseView(PermissionRequiredMixin, ManageModuleViewMixin, View):
@@ -36,11 +50,11 @@ class ManagePenhouseView(PermissionRequiredMixin, ManageModuleViewMixin, View):
                     SUM(b.quantity) AS total_birds
                 FROM
                     penhouse_model p
-                        JOIN
+                        LEFT JOIN
                     birds_stock_model b ON p.pen_number = b.pen_house_id
                 WHERE pen_name LIKE '%{}%'
-                GROUP BY b.pen_house_id;
-            """.format('%s', (pen_name,))
+                GROUP BY p.id;
+            """.format(pen_name)
         with connection.cursor() as cur:
             cur.execute(sql)
             return cur.fetchall()
@@ -50,6 +64,12 @@ class ManagePenhouseView(PermissionRequiredMixin, ManageModuleViewMixin, View):
         if 'search' in self.request.GET and self.request.GET['search']:
             return self.get_query_set(self.request.GET['search'])
         return self.get_query_set()
+
+    @property
+    def get_context(self):
+        context = super().get_context
+        context.update({'form': PenHouseForm(initial={'auth_user': self.request.user})})
+        return context
 
 
 class DeletePenhouseView(PermissionRequiredMixin, DeleteModelObjectMixin, View):

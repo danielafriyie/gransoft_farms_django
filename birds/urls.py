@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 from .views import (
-    MainModule, ManagePenhouseView, DeletePenhouseView
+    MainModule, ManagePenhouseView, DeletePenhouseView, CreatePenhouseView
 )
 
 app_name = 'birds'
@@ -13,6 +13,7 @@ main_module_url = [
 penhouse_url_patterns = [
     path('penhouse/', include([
         path('manage-penhouse', ManagePenhouseView.as_view(), name='manage_penhouse'),
+        path('create-penhouse', CreatePenhouseView.as_view(), name='create_penhouse'),
         path('delete-penhouse/<int:pk>/', DeletePenhouseView.as_view(), name='delete_penhouse')
     ]))
 ]
