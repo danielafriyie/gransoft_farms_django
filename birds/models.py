@@ -14,6 +14,7 @@ class PenHouse(models.Model):
         return f'#{self.pen_number} - {self.pen_name}'
 
     class Meta:
+        ordering = ['id']
         verbose_name = 'Penhouse'
         verbose_name_plural = 'Penhouse'
         db_table = 'penhouse_model'

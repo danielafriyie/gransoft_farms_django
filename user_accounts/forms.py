@@ -42,11 +42,11 @@ class BaseRoleForm(forms.Form):
                 'set_password': self.cleaned_data['set_password'],
                 'manage_roles': self.cleaned_data['manage_roles'],
                 'view_user_account_audit_trail': self.cleaned_data['view_user_account_audit_trail'],
-                'finance_add_new': self.cleaned_data['finance_pur_add_new'],
-                'finance_update': self.cleaned_data['finance_pur_update'],
-                'finance_delete': self.cleaned_data['finance_pur_delete'],
-                'finance_audit_trail': self.cleaned_data['finance_pur_audit_trail'],
-                'finance_report': self.cleaned_data['finance_pur_report']
+                'finance_add_new': self.cleaned_data['finance_add_new'],
+                'finance_update': self.cleaned_data['finance_update'],
+                'finance_delete': self.cleaned_data['finance_delete'],
+                'finance_audit_trail': self.cleaned_data['finance_audit_trail'],
+                'finance_report': self.cleaned_data['finance_report']
             }
         return self.form_data
 

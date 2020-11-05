@@ -14,7 +14,7 @@ BUILTIN_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    'dynamic_formsets'
+    'dynamic_formsets',
 ]
 
 MY_APPS = [

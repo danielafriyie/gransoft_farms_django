@@ -10,6 +10,47 @@
                             <a href="#" class="btn btn-success" data-toggle="modal" data-target="#penhouse-modal">
                                 Add New
                             </a>
+                            <div class="modal fade" id="penhouse-modal">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        {#                    modal header #}
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="confirm-modal-title">Penhouse Form</h5>
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+                                        {#                    end of modal header#}
+
+                                        {#                    modal body #}
+                                        <div class="modal-body">
+                                            <form action="{% url 'birds:manage_penhouse' %}" method="post">
+                                                {% csrf_token %}
+                                                <div class="form-group">
+                                                    <label for="">Pen Number:</label>
+                                                    {{ form.pen_number }}
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="">Pen Name:</label>
+                                                    {{ form.pen_name }}
+                                                </div>
+                                                <div class="form-group" hidden>
+                                                    <label for="">Pen Name:</label>
+                                                    {{ form.auth_user }}
+                                                </div>
+                                                <input type="hidden" name="path" value="{{ request.get_full_path }}">
+                                                <div class="d-flex">
+                                                    <button type="submit" class="btn btn-danger w-50 p-1 mr-1">
+                                                        Save
+                                                    </button>
+                                                    <button type="reset" class="btn btn-secondary w-50 p-1 ml-1"
+                                                            data-dismiss="modal">Cancel
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        {#                    end of modal body #}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="m-1">
                             <form action="{% url 'birds:manage_penhouse' %}" method="get" class="m-0 p-0">
@@ -43,16 +84,76 @@
                                 {% if paginator_pages %}
                                     {% for pen in paginator_pages %}
                                         <tr>
-                                            <th class="m-0 p-0">
-                                                <form action=""
-                                                      method="get" enctype="multipart/form-data">
-                                                    <input type="hidden" name="pen_id" value="{{ pen.0 }}">
-                                                    <button type="submit" class="btn btn-default">
-                                                        <strong>{{ pen.1 }}</strong>
-                                                    </button>
-                                                </form>
+                                            <th class="">
+                                                <a href="#" class="text-decoration-none text-dark"
+                                                   data-toggle="modal"
+                                                   data-target="#penhouse-update-modal-{{ pen.0 }}">
+                                                    {{ pen.1 }}
+                                                </a>
+                                                <div class="modal fade" id="penhouse-update-modal-{{ pen.0 }}">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            {#                    modal header #}
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="confirm-modal-title">
+                                                                    Penhouse Form</h5>
+                                                                <button type="button" class="close"
+                                                                        data-dismiss="modal">&times;
+                                                                </button>
+                                                            </div>
+                                                            {#                    end of modal header#}
+
+                                                            {#                    modal body #}
+                                                            <div class="modal-body">
+                                                                <form action="{% url 'birds:update_penhouse' %}"
+                                                                      method="post">
+                                                                    {% csrf_token %}
+                                                                    <div class="form-group">
+                                                                        <label for="{{ pen.1 }}"
+                                                                               class="font-weight-normal">Pen
+                                                                            Number:</label>
+                                                                        <input id="{{ pen.1 }}" type="text"
+                                                                               name="pen-no" value="{{ pen.1 }}"
+                                                                               class="form-control disabled">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="{{ pen.2 }}"
+                                                                               class="font-weight-normal">Pen
+                                                                            Name:</label>
+                                                                        <input name="pen-name" id="{{ pen.2 }}"
+                                                                               type="text" class="form-control"
+                                                                               value="{{ pen.2 }}">
+                                                                    </div>
+                                                                    <div class="form-group" hidden>
+                                                                        <input type="hidden" name="pen-id"
+                                                                               value="{{ pen.0 }}">
+                                                                    </div>
+                                                                    <input type="hidden" name="path"
+                                                                           value="{{ request.get_full_path }}">
+                                                                    <div class="d-flex">
+                                                                        <button type="submit"
+                                                                                class="btn btn-danger w-50 p-1 mr-1">
+                                                                            Save
+                                                                        </button>
+                                                                        <button type="reset"
+                                                                                class="btn btn-secondary w-50 p-1 ml-1"
+                                                                                data-dismiss="modal">Cancel
+                                                                        </button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                            {#                    end of modal body #}
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </th>
-                                            <td>{{ pen.2 }}</td>
+                                            <td>
+                                                <a href="#" class="text-decoration-none text-dark"
+                                                   data-toggle="modal"
+                                                   data-target="#penhouse-update-modal-{{ pen.0 }}">
+                                                    {{ pen.2 }}
+                                                </a>
+                                            </td>
                                             <td>{{ pen.3|date:'Y-M-d' }}</td>
                                             <td>{{ pen.4|intcomma }}</td>
                                             <td class="m-0 p-0">
@@ -78,47 +179,6 @@
                         </div>
                         {% include 'partials/_pagination.html' %}
                         {% include 'partials/_confirm_modal.html' %}
-                        <div class="modal fade" id="penhouse-modal">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    {#                    modal header #}
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="confirm-modal-title">Penhouse Form</h5>
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    </div>
-                                    {#                    end of modal header#}
-
-                                    {#                    modal body #}
-                                    <div class="modal-body">
-                                        <form action="{% url 'birds:create_penhouse' %}" method="post">
-                                            {% csrf_token %}
-                                            <div class="form-group">
-                                                <label for="">Pen Number:</label>
-                                                {{ form.pen_number }}
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="">Pen Name:</label>
-                                                {{ form.pen_name }}
-                                            </div>
-                                            <div class="form-group" hidden>
-                                                <label for="">Pen Name:</label>
-                                                {{ form.auth_user }}
-                                            </div>
-                                            <input type="hidden" name="path" value="{{ request.get_full_path }}">
-                                            <div class="d-flex">
-                                                <button type="submit" class="btn btn-danger w-50 p-1 mr-1">
-                                                    Save
-                                                </button>
-                                                <button type="reset" class="btn btn-secondary w-50 p-1 ml-1"
-                                                        data-dismiss="modal">Cancel
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    {#                    end of modal body #}
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

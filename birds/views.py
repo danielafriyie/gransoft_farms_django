@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import View
 from django.db.models import RestrictedError
 from django.db import connection
@@ -21,16 +21,16 @@ class MainModule(ModuleAccesRedirectMixin, View):
     )
 
 
-class CreatePenhouseView(PermissionRequiredMixin, View):
+class UpdatePenhouseView(PermissionRequiredMixin, View):
     perm = 'birds.birds_manage_pen_house'
 
     def post(self, request):
-        form, path = PenHouseForm(request.POST), request.POST['path']
-        if form.is_valid():
-            form.save()
-            msg.success(request, 'Pen saved successfully!')
-        else:
-            msg.error(request, "There's an error in your form!")
+        form = request.POST
+        path, p_name, p_no, p_id = form['path'], form['pen-name'], form['pen-no'], form['pen-id']
+        pen = get_object_or_404(PenHouse, pk=p_id)
+        pen.pen_name, pen.pen_number, pen.auth_user = p_name, p_no, request.user
+        pen.save()
+        msg.success(request, 'Pen updated successfully!')
         return redirect(path if path else 'birds:manage_penhouse')
 
 
@@ -53,7 +53,8 @@ class ManagePenhouseView(PermissionRequiredMixin, ManageModuleViewMixin, View):
                         LEFT JOIN
                     birds_stock_model b ON p.pen_number = b.pen_house_id
                 WHERE pen_name LIKE '%{}%'
-                GROUP BY p.id;
+                GROUP BY p.id
+                ORDER BY p.id ASC;
             """.format(pen_name)
         with connection.cursor() as cur:
             cur.execute(sql)
@@ -70,6 +71,15 @@ class ManagePenhouseView(PermissionRequiredMixin, ManageModuleViewMixin, View):
         context = super().get_context
         context.update({'form': PenHouseForm(initial={'auth_user': self.request.user})})
         return context
+
+    def post(self, request):
+        form, path = PenHouseForm(request.POST), request.POST['path']
+        if form.is_valid():
+            form.save()
+            msg.success(request, 'Pen saved successfully!')
+        else:
+            msg.error(request, form.errors)
+        return redirect(path if path else 'birds:manage_penhouse')
 
 
 class DeletePenhouseView(PermissionRequiredMixin, DeleteModelObjectMixin, View):

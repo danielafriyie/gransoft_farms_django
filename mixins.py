@@ -275,19 +275,19 @@ class ReportViewMixin(ExcludeUrlKwargsMixin):
 
     @property
     def query_set(self):
-        filter_dict = {}
         if (self.date1_request_kwarg and self.date2_request_kwarg) in self.request.GET:
+            filter_dict = {}
             filter_dict.update({
                 f"{self.filter_date_field}__gte": self.request.GET[self.date1_request_kwarg],
                 f'{self.filter_date_field}__lte': self.request.GET[self.date2_request_kwarg]
             })
 
-        if self.url_filter_kwargs:
-            for kwarg, field in self.url_filter_kwargs:
-                if kwarg in self.request.GET and self.request.GET[kwarg]:
-                    filter_dict.update({field: self.request.GET[kwarg]})
+            if self.url_filter_kwargs:
+                for kwarg, field in self.url_filter_kwargs:
+                    if kwarg in self.request.GET and self.request.GET[kwarg]:
+                        filter_dict.update({field: self.request.GET[kwarg]})
 
-        return self.query_set_data(**filter_dict)
+            return self.query_set_data(**filter_dict)
 
     @property
     def context(self):

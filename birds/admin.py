@@ -7,7 +7,7 @@ from .models import (
 
 @admin.register(PenHouse)
 class PenHouseAdmin(admin.ModelAdmin):
-    list_display = ('id', 'pen_number', 'date_created', 'pen_name')
+    list_display = ('id', 'pen_number', 'date_created', 'pen_name', 'auth_user')
     list_display_links = ('id', 'pen_number')
     list_filter = ('date_created',)
     search_fields = ('id', 'pen_number', 'pen_name')
