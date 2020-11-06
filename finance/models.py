@@ -66,8 +66,8 @@ class FinanceModelAudit(BaseModel):
     action_flag = models.CharField(max_length=20)
 
     class Meta:
-        verbose_name = 'Finance Model Audit'
-        verbose_name_plural = 'Finance Model Audit'
+        verbose_name = 'Sale / Purchase Audit'
+        verbose_name_plural = 'Sales / Purchases Audit'
         db_table = 'finance_model_audit'
 
 

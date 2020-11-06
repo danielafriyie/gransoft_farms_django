@@ -24,6 +24,42 @@
                         </a>
                     </div>
                 {% endif %}
+                {% if perms.birds.birds_manage_pen_house %}
+                    <div class="mb-2 col-lg-3 col-md-4 col-sm-12">
+                        <a href=""
+                           class="btn btn-secondary px-5 h-100 w-100">
+                            <span><i class="fa fa-store fa-5x"></i></span><br>
+                            <span class="mx-2">Pen House</span>
+                        </a>
+                    </div>
+                {% endif %}
+                {% if perms.birds.birds_manage_birds_stock %}
+                    <div class="mb-2 col-lg-3 col-md-4 col-sm-12">
+                        <a href=""
+                           class="btn btn-secondary px-5 h-100 w-100">
+                            <span><i class="fa fa-crow fa-5x"></i></span><br>
+                            <span class="mx-2">Birds Stock</span>
+                        </a>
+                    </div>
+                {% endif %}
+                {% if perms.birds.birds_can_manage_mortality_cull %}
+                    <div class="mb-2 col-lg-3 col-md-4 col-sm-12">
+                        <a href=""
+                           class="btn btn-secondary px-5 h-100 w-100">
+                            <span><i class="fa fa-feather fa-5x"></i></span><br>
+                            <span class="mx-2">Mortality / Culls</span>
+                        </a>
+                    </div>
+                {% endif %}
+                {% if perms.birds.birds_manage_medicine_feed %}
+                    <div class="mb-2 col-lg-3 col-md-4 col-sm-12">
+                        <a href=""
+                           class="btn btn-secondary px-5 h-100 w-100">
+                            <span><i class="fa fa-syringe fa-5x"></i></span><br>
+                            <span class="mx-2">Medicine / Feeds</span>
+                        </a>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </section>
