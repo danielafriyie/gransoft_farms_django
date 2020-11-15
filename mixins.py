@@ -227,7 +227,7 @@ class ExcludeUrlKwargsMixin:
     >>> url = '/someurl/?page=4'
     >>> url = self._exclude_url_kwargs(url)
     >>> url
-    >>> '/someurl/'
+    '/someurl/'
     """
     exclude_url_kwargs_pattern = r'&page=\d*'
 

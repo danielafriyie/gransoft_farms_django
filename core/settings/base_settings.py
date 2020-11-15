@@ -23,7 +23,8 @@ MY_APPS = [
     'finance.apps.FinanceConfig',
     'reports.apps.ReportsConfig',
     'med_feeds.apps.MedFeedsConfig',
-    'birds.apps.BirdsConfig'
+    'birds.apps.BirdsConfig',
+    'eggs.apps.EggsConfig'
 ]
 
 INSTALLED_APPS = BUILTIN_APPS + THIRD_PARTY_APPS + MY_APPS
@@ -39,7 +40,6 @@ BUILT_MIDDLEWARE = [
 ]
 
 MY_MIDDLEWARE = [
-    # login required middleware
     'core.middleware.LoginRequiredMiddleWare'
 ]
 
