@@ -256,7 +256,7 @@ class ReportViewMixin(ExcludeUrlKwargsMixin):
     request_kwarg = 'export'
     model = None
     exclude_kwargs = None  # columns or rows to exclude from the queryset
-    order_col = None
+    order_col = 'id'
     export_filename = None
     date1_request_kwarg = 'date1'
     date2_request_kwarg = 'date2'

@@ -63,6 +63,10 @@
                         <div class="m-1">
                             <form action="{% url 'birds:manage_med_feed' %}" method="get" class="m-0 p-0">
                                 <div class="input-group">
+                                    <input type="date" name="date1" class="form-control"
+                                           value="{{ values.date1 }}" required>
+                                    <input type="date" name="date2" class="form-control"
+                                           value="{{ values.date2 }}" required>
                                     <select name="category" id="category" class="form-control">
                                         <option value=""></option>
                                         <option value="Medicine" {% if values.category == 'Medicine' %}

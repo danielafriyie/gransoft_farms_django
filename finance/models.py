@@ -69,6 +69,3 @@ class FinanceModelAudit(BaseModel):
         verbose_name = 'Sale / Purchase Audit'
         verbose_name_plural = 'Sales / Purchases Audit'
         db_table = 'finance_model_audit'
-
-
-

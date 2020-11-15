@@ -4,6 +4,8 @@ from django.db.models import RestrictedError
 from django.db import connection
 from django.contrib import messages as msg
 
+from datetime import datetime as dt
+
 from mixins import (
     ModuleAccesRedirectMixin, PermissionRequiredMixin, ManageModuleViewMixin,
     DeleteModelObjectMixin
@@ -72,6 +74,16 @@ class DeleteMixin(PermissionRequiredMixin, DeleteModelObjectMixin, View):
 
 
 class ManageViewMixin(ManageModuleViewMixin):
+
+    @property
+    def query_set(self):
+        qs = super().query_set
+
+        if 'date1' and 'date2' not in self.request.GET:
+            cd = dt.now().date()
+            qs = qs.filter(date_created__gte=cd, date_created__lte=cd)
+
+        return qs
 
     @property
     def get_context(self):
@@ -154,7 +166,11 @@ class ManageStockView(PermissionRequiredMixin, ManageViewMixin, CreateMixin, Vie
     values_list_cols = ('id', 'pen_house__pen_name', 'date_created', 'invoice_no__invoice_no', 'quantity')
     module = 'Stock'
     form = BirdsStockForm
-    url_filter_kwargs = (('search', 'pen_house__pen_name__icontains'),)
+    url_filter_kwargs = (
+        ('search', 'pen_house__pen_name__icontains'),
+        ('date1', 'date_created__gte'),
+        ('date2', 'date_created__lte')
+    )
 
     @property
     def get_context(self):
@@ -194,7 +210,9 @@ class ManageMortCullView(PermissionRequiredMixin, ManageViewMixin, CreateMixin, 
     form = MortCullForm
     url_filter_kwargs = (
         ('category', 'category__icontains'),
-        ('search', 'pen_house__pen_name__icontains')
+        ('search', 'pen_house__pen_name__icontains'),
+        ('date1', 'date_created__gte'),
+        ('date2', 'date_created__lte')
     )
 
 
@@ -224,7 +242,9 @@ class ManageMedicineFeedView(PermissionRequiredMixin, ManageViewMixin, CreateMix
     form = MedFeedForm
     url_filter_kwargs = (
         ('category', 'category__icontains'),
-        ('search', 'pen_house__pen_name__icontains')
+        ('search', 'pen_house__pen_name__icontains'),
+        ('date1', 'date_created__gte'),
+        ('date2', 'date_created__lte')
     )
 
 

@@ -59,6 +59,16 @@
                         <div class="m-1">
                             <form action="{% url 'birds:manage_stock' %}" method="get" class="m-0 p-0">
                                 <div class="input-group">
+                                    <input type="date" name="date1" class="form-control"
+                                           value="{{ values.date1 }}" required>
+                                    <input type="date" name="date2" class="form-control"
+                                           value="{{ values.date2 }}" required>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-info" type="submit" name="filter">
+                                            <i class="fa fa-calendar-alt"></i>
+                                            Filter
+                                        </button>
+                                    </div>
                                     <input type="text" name="search" placeholder="search"
                                            class="form-control ml-1" value="{{ values.search }}"
                                            style="width: 20rem;">
