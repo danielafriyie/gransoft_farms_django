@@ -1,7 +1,8 @@
 from django.urls import path, include
 from .views import (
     FinanceReportView, reports_home, FinanceAuditReportView, PenhouseReportView,
-    BirdsStockReportView, MortalityCullReportView, MedicineFeedReportView
+    BirdsStockReportView, MortalityCullReportView, MedicineFeedReportView, EggsReportView,
+    EggsAuditReportView
 )
 
 app_name = 'reports'
@@ -24,4 +25,11 @@ birds_report_urls = [
     ]))
 ]
 
-urlpatterns = home_url + finance_report_urls + birds_report_urls
+eggs_report_urls = [
+    path('eggs/', include([
+        path('eggs/', EggsReportView.as_view(), name='eggs_report'),
+        path('eggs-audit/', EggsAuditReportView.as_view(), name='eggs_audit_report'),
+    ]))
+]
+
+urlpatterns = home_url + finance_report_urls + birds_report_urls + eggs_report_urls

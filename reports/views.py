@@ -5,6 +5,7 @@ from django.views.generic import View
 from mixins import PermissionRequiredMixin, ReportViewMixin
 from finance.models import FinanceModelAudit, ItemDetail
 from birds.models import BirdsStock, MortalityCull, MedicineFeed
+from eggs.models import EggsModel, EggsModelAudit
 
 
 def reports_home(request):
@@ -150,3 +151,23 @@ class MedicineFeedReportView(BaseReportView):
         ('search', 'pen_house__pen_name__icontains'),
         ('category', 'category__icontains'),
     )
+
+
+class EggsReportView(BaseReportView):
+    perm = 'egg.manage_eggs'
+    template = 'reports/eggs_report.html'
+    excel_cols = ('id', 'pen__pen_name', 'date_created', 'time', 'quantity', 'auth_user')
+    query_cols = excel_cols
+    model = EggsModel
+    export_filename = 'eggs report'
+    url_filter_kwargs = (('search', 'pen__pen_number__icontains'),)
+
+
+class EggsAuditReportView(BaseReportView):
+    perm = 'egg.manage_eggs_audit'
+    template = 'reports/eggs_audit_report.html'
+    excel_cols = ('id', 'egg_id', 'pen', 'date_created', 'time', 'quantity', 'action_flag', 'auth_user')
+    query_cols = excel_cols
+    model = EggsModelAudit
+    export_filename = 'eggs audit report'
+    url_filter_kwargs = (('search', 'pen__icontains'),)

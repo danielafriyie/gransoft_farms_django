@@ -60,6 +60,24 @@
                         </a>
                     </div>
                 {% endif %}
+                {% if perms.eggs.manage_eggs %}
+                    <div class="mb-2 col-lg-3 col-md-4 col-sm-12">
+                        <a href="{% url 'reports:eggs_report' %}"
+                           class="btn btn-secondary px-5 h-100 w-100">
+                            <span><i class="fa fa-egg fa-5x"></i></span><br>
+                            <span class="mx-2">Eggs</span>
+                        </a>
+                    </div>
+                {% endif %}
+                {% if perms.eggs.manage_eggs_audit %}
+                    <div class="mb-2 col-lg-3 col-md-4 col-sm-12">
+                        <a href="{% url 'reports:eggs_audit_report' %}"
+                           class="btn btn-secondary px-5 h-100 w-100">
+                            <span><i class="fab fa-earlybirds fa-5x"></i></span><br>
+                            <span class="mx-2">Eggs / Audit</span>
+                        </a>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </section>
