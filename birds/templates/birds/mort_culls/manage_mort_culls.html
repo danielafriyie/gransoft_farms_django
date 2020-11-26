@@ -1,5 +1,6 @@
 {% extends 'birds/base_birds_template.html' %}
 {% load humanize %}
+{% block breadcrumb %}  Birds &raquo;  Mortality / Culls {% endblock breadcrumb %}
 {% block content %}
     {% if perms.birds.birds_manage_birds_stock %}
         <section id="manage-stock">

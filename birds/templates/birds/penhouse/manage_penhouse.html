@@ -1,4 +1,5 @@
 {% extends 'birds/base_birds_template.html' %}
+{% block breadcrumb %}  Birds &raquo;  Penhouse {% endblock breadcrumb %}
 {% load humanize %}
 {% block content %}
     {% if perms.birds.birds_manage_pen_house %}

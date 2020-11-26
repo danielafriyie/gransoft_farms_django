@@ -18,16 +18,11 @@ function setActiveModule(path, elm_id, showSubMenu = false) {
 }
 
 $(document).ready(function () {
-    // setActiveModule('user-accounts', 'user-accounts');
     setActiveModule('user-accounts', 'user-accounts-nav');
-
     setActiveModule('finance', 'finance-module');
-
-    // setActiveModule('/finance/purchases', 'finance-purchases-module', true);
-
     setActiveModule('birds', 'birds-module');
-
     setActiveModule('reports', 'reports-module');
+    setActiveModule('eggs', 'eggs-module');
 });
 
 if (window.matchMedia('(min-width: 1450px)').matches) {

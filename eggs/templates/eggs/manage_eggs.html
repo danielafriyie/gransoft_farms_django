@@ -1,48 +1,44 @@
-{% extends 'birds/base_birds_template.html' %}
+{% extends 'base.html' %}
+{% block modules %} {% include 'eggs/modules.html' %} {% endblock modules %}
+{% block breadcrumb %}  Eggs &raquo; Manage {% endblock breadcrumb %}
 {% load humanize %}
-{% block breadcrumb %}  Birds &raquo; Medicine / Feeds {% endblock breadcrumb %}
 {% block content %}
-    {% if perms.birds.birds_manage_birds_stock %}
-        <section id="manage-stock">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12 d-flex" id="filtering">
+    <section id="eggs">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <div class="col-12 d-flex m-0 p-0" id="filtering">
                         <div class="m-1">
-                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#stock-modal">
+                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#egg-modal">
                                 Add New
                             </a>
-                            <div class="modal fade" id="stock-modal">
+                            <div class="modal fade" id="egg-modal">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         {#                    modal header #}
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="confirm-modal-title">Medicine/Feed Form</h5>
+                                            <h5 class="modal-title" id="confirm-modal-title">Egg Form</h5>
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                         </div>
                                         {#                    end of modal header#}
 
                                         {#                    modal body #}
                                         <div class="modal-body">
-                                            <form action="{% url 'birds:manage_med_feed' %}" method="post">
+                                            <form action="{% url 'eggs:manage_eggs' %}" method="post">
                                                 {% csrf_token %}
                                                 <div class="form-group">
                                                     <label for="">Pen House:</label>
-                                                    {{ form.pen_house }}
+                                                    {{ form.pen }}
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="">Category:</label>
-                                                    {{ form.category }}
+                                                    <label for="">Time:</label>
+                                                    {{ form.time }}
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="">Quantity:</label>
                                                     {{ form.quantity }}
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="">Description:</label>
-                                                    {{ form.description }}
-                                                </div>
                                                 <div class="form-group" hidden>
-                                                    <label for="">Pen Name:</label>
                                                     {{ form.auth_user }}
                                                 </div>
                                                 <input type="hidden" name="path" value="{{ request.get_full_path }}">
@@ -62,29 +58,18 @@
                             </div>
                         </div>
                         <div class="m-1">
-                            <form action="{% url 'birds:manage_med_feed' %}" method="get" class="m-0 p-0">
+                            <form action="{% url 'eggs:manage_eggs' %}" method="get" class="m-0 p-0">
                                 <div class="input-group">
                                     <input type="date" name="date1" class="form-control"
                                            value="{{ values.date1 }}" required>
                                     <input type="date" name="date2" class="form-control"
                                            value="{{ values.date2 }}" required>
-                                    <select name="category" id="category" class="form-control">
-                                        <option value=""></option>
-                                        <option value="Medicine" {% if values.category == 'Medicine' %}
-                                                selected {% endif %}>
-                                            Medicine
-                                        </option>
-                                        <option value="Feed" {% if values.category == 'Feed' %}
-                                                selected {% endif %}>Feed
-                                        </option>
-                                    </select>
                                     <div class="input-group-append">
-                                        <button class="mx-1 btn btn-info" type="submit" name="filter">
+                                        <button class="btn btn-info" type="submit" name="filter">
                                             <i class="fa fa-calendar-alt"></i>
                                             Filter
                                         </button>
                                     </div>
-
                                     <input type="text" name="search" placeholder="search"
                                            class="form-control ml-1" value="{{ values.search }}"
                                            style="width: 20rem;">
@@ -98,7 +83,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 m-0 p-0">
                         <div id="result_table">
                             <table class="table table-sm table-bordered table-responsive-md sortable">
                                 <thead class="thead-light">
@@ -106,28 +91,28 @@
                                     <th scope="col" class="text-uppercase">ID</th>
                                     <th scope="col" class="text-uppercase">Pen House</th>
                                     <th scope="col" class="text-uppercase">Date Created</th>
-                                    <th scope="col" class="text-uppercase">Category</th>
+                                    <th scope="col" class="text-uppercase">Time</th>
                                     <th scope="col" class="text-uppercase">Quantity</th>
                                     <th class="text-uppercase" scope="col">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% if paginator_pages %}
-                                    {% for mc, form in queryset %}
+                                    {% for egg, form in queryset %}
                                         <tr>
                                             <th class="">
                                                 <a href="#" class="text-decoration-none text-dark"
                                                    data-toggle="modal"
-                                                   data-target="#mc-update-modal-{{ mc.0 }}">
-                                                    {{ mc.0 }}
+                                                   data-target="#egg-update-modal-{{ egg.0 }}">
+                                                    {{ egg.0 }}
                                                 </a>
-                                                <div class="modal fade" id="mc-update-modal-{{ mc.0 }}">
+                                                <div class="modal fade" id="egg-update-modal-{{ egg.0 }}">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             {#                    modal header #}
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title" id="confirm-modal-title">
-                                                                    Medicine/Feed Form</h5>
+                                                                    Egg Form</h5>
                                                                 <button type="button" class="close"
                                                                         data-dismiss="modal">&times;
                                                                 </button>
@@ -136,28 +121,22 @@
 
                                                             {#                    modal body #}
                                                             <div class="modal-body">
-                                                                <form action="{% url 'birds:update_med_feed' mc.0 %}"
+                                                                <form action="{% url 'eggs:update_egg' egg.0 %}"
                                                                       method="post">
                                                                     {% csrf_token %}
                                                                     <div class="form-group">
-                                                                        <label for="" class="font-weight-normal">Pen
-                                                                            House:</label>
-                                                                        {{ form.pen_house }}
+                                                                        <label for="">Pen House:</label>
+                                                                        {{ form.pen }}
                                                                     </div>
                                                                     <div class="form-group">
-                                                                        <label for="" class="font-weight-normal">Category:</label>
-                                                                        {{ form.category }}
+                                                                        <label for="">Time:</label>
+                                                                        {{ form.time }}
                                                                     </div>
                                                                     <div class="form-group">
-                                                                        <label for="" class="font-weight-normal">Quantity:</label>
+                                                                        <label for="">Quantity:</label>
                                                                         {{ form.quantity }}
                                                                     </div>
-                                                                    <div class="form-group">
-                                                                        <label for="" class="font-weight-normal">Description:</label>
-                                                                        {{ form.description }}
-                                                                    </div>
                                                                     <div class="form-group" hidden>
-                                                                        <label for="">Pen Name:</label>
                                                                         {{ form.auth_user }}
                                                                     </div>
                                                                     <input type="hidden" name="path"
@@ -182,23 +161,23 @@
                                             <td>
                                                 <a href="#" class="text-decoration-none text-dark"
                                                    data-toggle="modal"
-                                                   data-target="#mc-update-modal-{{ mc.0 }}">
-                                                    {{ mc.1 }}
+                                                   data-target="#egg-update-modal-{{ egg.0 }}">
+                                                    {{ egg.1 }}
                                                 </a>
                                             </td>
-                                            <td>{{ mc.2|date:'Y-M-d' }}</td>
-                                            <td>{{ mc.3 }}</td>
-                                            <td>{{ mc.4 }}</td>
+                                            <td>{{ egg.2|date:'Y-M-d' }}</td>
+                                            <td>{{ egg.3|naturaltime }}</td>
+                                            <td>{{ egg.4|intcomma }}</td>
                                             <td class="m-0 p-0">
                                                 <a href="#" data-toggle="modal" data-target="#confirm-modal"
                                                    class="text-decoration-none btn btn-outline-danger ml-3"
-                                                   onclick="confirmModal('delete-mc-{{ mc.0 }}', 'Confirm Delete')">
+                                                   onclick="confirmModal('delete-egg-{{ egg.0 }}', 'Confirm Delete')">
                                                     <span><i class="fa fa-trash-alt"></i></span>
                                                 </a>
-                                                <form action="{% url 'birds:delete_med_feed' mc.0 %}"
+                                                <form action="{% url 'eggs:delete_egg' egg.0 %}"
                                                       method="post" enctype="multipart/form-data"
                                                       style="display: none"
-                                                      id="delete-mc-{{ mc.0 }}">
+                                                      id="delete-egg-{{ egg.0 }}">
                                                     {% csrf_token %}
                                                     <input type="hidden" name="path"
                                                            value="{{ request.get_full_path }}">
@@ -215,6 +194,7 @@
                     </div>
                 </div>
             </div>
-        </section>
-    {% endif %}
-{% endblock content %}
+        </div>
+    </section>
+{% endblock %}
+{% block javascript %} {% endblock javascript %}

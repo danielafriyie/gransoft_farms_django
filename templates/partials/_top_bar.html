@@ -33,7 +33,9 @@
                 {% if perms.birds %}
                     <a href="{% url 'birds:main_module' %}" class="nav-link" id="birds-module">Birds</a>
                 {% endif %}
-                <a href="" class="nav-item nav-link">Eggs</a>
+                {% if perms.eggs %}
+                    <a href="{% url 'eggs:main_module' %}" class="nav-link" id="eggs-module">Eggs</a>
+                {% endif %}
                 <a href="{% url 'reports:reports_home' %}" class="nav-link" id="reports-module">
                     Reports
                 </a>
