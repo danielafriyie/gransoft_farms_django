@@ -93,6 +93,6 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger'
 }
 
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 AUTH_USER_MODEL = 'user_accounts.UserAccountsModel'
 CONN_MAX_AGE = 30

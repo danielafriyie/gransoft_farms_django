@@ -13,8 +13,7 @@ class LoginRequiredMiddleWare:
         self.get_response = get_response
 
     def __call__(self, request):
-        response = self.get_response(request)
-        return response
+        return self.get_response(request)
 
     def process_view(self, request, *args, **kwargs):
         try:
